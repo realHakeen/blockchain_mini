@@ -10,7 +10,7 @@
 用户发起一笔交易，进入交易池，矿工挑选交易，打包成区块，然后矿工将区块，矿工收入上一个区块的hash值，完成整条链，然后广播区块。这一句话实际上相当不严谨，里面有太多东西需要思考。
 
 关于，这个流程里面什么时候
-1. 交易、区块需要哪些量
+1. 交易、区块需要哪些字段
 2. 该使用什么哈希函数
 3. 交易池子如何进行组织
 4. 交易如何组织
@@ -53,13 +53,21 @@ block的字段设计：
 <image src = "./docs/images/tx.png"></image>
 对于worker来说：
 监听，从网络上收到tx，然后将tx放入到自己的subpool中，再从subpool中按照规则选取txs，然后将tx进行运算，预修改全局状态，也就是账户的余额，形成区块打上时间戳，发送到网络上，之后通过节点之间的共识机制，达成共识，上链，所有节点下载并且同步。
+
 1. 这里有许多衍生的问题，谁来当Worker，Worker如何选择？
 2. 共识节点如何选择？
 3. 共识如何设置？
 4. Txpool的设计，每个节点都维护着自己的Subpool，Subpool之间如何互通？
 
 我们一个一个来解决：
-[该使用什么哈希函数？](./docs/research/chooseHashFunc.md)
+【WIP】[该使用什么哈希函数？](./docs/research/chooseHashFunc.md)
+【WIP】[交易池子txpool如何组织？](./docs/research/txpoolDesign.md)
+【WIP】[矿工机制的设计:Worker的选择](./docs/research/workerMechenism.md)
+【WIP】[交易和区块的广播，同步机制](./docs/research/syncMechanism.md)
+【WIP】[区块的共识机制以及共识节点的选择](./docs/research/Consensus.md)
+【WIP】[底层数据库的设计](./docs/research/DataBase.md)
+
+
 
 
 
