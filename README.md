@@ -1,6 +1,6 @@
 ## 简述
 <image src = "./docs/images/LOGO.png"></image>
-这条链是一个简单的区块链mini demo，我们尝试使用Rust语言进行区块链的构建，我们给一个简单的名称就定为下一次23年底布拉格升级的名字——Prague。
+这条链是一个简单的区块链mini demo，我们尝试使用Rust语言进行区块链的构建，我们给一个简单的名称就定为以太坊下一次23年底布拉格升级的名字——Prague。
 
 我们是一点点扩充的，该开始只是一条最简单的链，相当于是作为我们练习Rust+区块链开发的第一个作品，我们还将在docs文档里面介绍我们的想法以及在coding过程中需要扩充的东西以及其研究，我们尽量模块化以方便后续的扩充。
 ## 初始架构
@@ -38,22 +38,34 @@
 2. 时间到达：当时间大约在12s左右时，我们打包成一个块。
 
 block的字段设计：
-**BlockHash 用来记录区块的整个哈希值
-**presentHash 上一个区块的哈希值
-**BlockHeight/blocknumber区块高度 因为区块链是使用链式结构，因此我们选择区块高度
-**txns 交易的数量
-**Root 所有交易的根节点哈希值
-**Timestamp 时间戳，区块生成的时间，具体是在区块初始化的那一刻的Unix时间
-**BlockReward 该区块生产出来给矿工的费用
-**Size 该区块占据的存储空间大小
-**Data 矿工的数据，当前不对其进行约束，矿工任意写
-
-对于worker来说：
-监听，从网络上收到tx，然后将tx放入到自己的subpool中，再从subpool中按照规则选取txs，然后将tx进行运算，预修改全局状态，也就是账户的余额，形成区块打上时间戳，发送到网络上，之后
+1. BlockHash 用来记录区块的整个哈希值
+2. presentHash 上一个区块的哈希值
+3. BlockHeight/blocknumber区块高度 因为区块链是使用链式结构，因此我们选择区块高度
+4. txns 交易的数量
+5. txRoot 所有交易的根节点哈希值
+6. stateRoot 当前区块快照后的全局状态的stateRoot
+7. Timestamp 时间戳，区块生成的时间，具体是在区块初始化的那一刻的Unix时间
+8. BlockReward 该区块生产出来给矿工的费用
+9. Size 该区块占据的存储空间大小
+10. Data 矿工的数据，当前不对其进行约束，矿工任意写
 
 矿工的流程图如下：
 <image src = "./docs/images/tx.png"></image>
+对于worker来说：
+监听，从网络上收到tx，然后将tx放入到自己的subpool中，再从subpool中按照规则选取txs，然后将tx进行运算，预修改全局状态，也就是账户的余额，形成区块打上时间戳，发送到网络上，之后通过节点之间的共识机制，达成共识，上链，所有节点下载并且同步。
+1. 这里有许多衍生的问题，谁来当Worker，Worker如何选择？
+2. 共识节点如何选择？
+3. 共识如何设置？
+4. Txpool的设计，每个节点都维护着自己的Subpool，Subpool之间如何互通？
 
-Txpool的设计，每个节点都维护着自己的Subpool，Subpool之间如何互通？
+我们一个一个来解决：
+[该使用什么哈希函数？](./docs/research/chooseHashFunc.md)
+
+
+
+
+
+
+
 
 
