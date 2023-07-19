@@ -59,13 +59,15 @@ block的字段设计：
 3. 共识如何设置？
 4. Txpool的设计，每个节点都维护着自己的Subpool，Subpool之间如何互通？
 
+## 机制研究
 我们一个一个来解决：
-【WIP】[该使用什么哈希函数？](./docs/research/chooseHashFunc.md)
-【WIP】[交易池子txpool如何组织？](./docs/research/txpoolDesign.md)
-【WIP】[矿工机制的设计:Worker的选择](./docs/research/workerMechenism.md)
-【WIP】[交易和区块的广播，同步机制](./docs/research/syncMechanism.md)
-【WIP】[区块的共识机制以及共识节点的选择](./docs/research/Consensus.md)
-【WIP】[底层数据库的设计](./docs/research/DataBase.md)
+【WIP】[该使用什么哈希函数？](./docs/research/chooseHashFunc.md)  
+【WIP】[交易池子txpool如何组织？](./docs/research/txpoolDesign.md)  
+【WIP】[矿工机制的设计:Worker的选择](./docs/research/workerMechenism.md)  
+【WIP】[交易和区块的广播，同步机制](./docs/research/syncMechanism.md)  
+【WIP】[区块的共识机制以及共识节点的选择](./docs/research/Consensus.md)  
+【WIP】[底层数据库的设计](./docs/research/DataBase.md)  
+
 
 
 
