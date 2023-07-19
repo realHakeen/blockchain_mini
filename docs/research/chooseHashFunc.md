@@ -9,12 +9,49 @@ SHA-2的运行原理：
 <image src= "/docs/images/root_demo.png"></image>  
 SHA-2是美国安全局设计的哈希函数，更难破解，一台计算机破解出来需要上万年。因此很适合。SHA-2是许多种类哈希函数的集合，比如SHA-256就是其中一种。而以太坊使用的就是SHA-3的获胜者Keccak-256，这个更难破解，但是keccak-256不仅仅是为了破解，是综合考量：
 
-1. keccak是一种通用的哈希函数，可以用于多种场景，比如生成地址、签名、Merkle树等，统一使用keccak可以简化设计和实现。
-2. keccak是一种高效的哈希函数，可以在CPU和GPU上快速计算，适合以太坊的高吞吐量和低延迟的需求。
-3. keccak是一种安全的哈希函数，可以抵抗量子计算机的攻击，为以太坊的未来发展提供保障。
+* keccak是一种通用的哈希函数，可以用于多种场景，比如生成地址、签名、Merkle树等，统一使用keccak可以简化设计和实现。
+* keccak是一种高效的哈希函数，可以在CPU和GPU上快速计算，适合以太坊的高吞吐量和低延迟的需求。
+* keccak是一种安全的哈希函数，可以抵抗量子计算机的攻击，为以太坊的未来发展提供保障。
 
 
 能够从上图看到，我们的tx形成二叉树，tx抽象成哈希值，然后每两个哈希值由形成一个哈希值，直到达到hash root。而以太坊使用的是MPT树，这个也有很多考量：
-[MPT树详解](https://zhuanlan.zhihu.com/p/133718794)  
+ 
+
+MPT树：是由Merkel树和Patricia树组合而成。
+trie树又称为字典树或前缀树，是树形数据结构中的一种。
+trie使用公共的前缀作为树的一部分。如下图所示：
+<image src= "/docs/images/trie.png"></image>
+* 跟节点不包含字符，除跟节点以外每个节点只包含一个字符
+* 从根节点到某一个节点，自上而下，路径上经过的字符链接起来就是完整的字符串
+* 每个节点的分支树目取决于key值的元素的取值范围，比如上图中每个节点会产生26个英文字母的分叉
+* trie树的查找效率取决于key的长度，key长度越长，则效率越低
+
+我们能够看到trie的最大优点在于查找一个字符串非常的便捷快速。
+但是问题同样很明显，其每个节点只保存一个字符，因此整个trie树将会随着key值变大的膨胀。
+
+MPT树是前缀树和Merkel trie的结合。  
+MPT树的节点有四种类型：  
+* 拓展节点（Extension Node）：只能有一个子节点
+* 分支节点（Branch Node）：可以有多个节点
+* 叶子节点（Leaf Node）
+* 空节点：空字符串  
+
+key只在拓展节点和叶子节点有，但是分支节点没有key。Value用来存储节点数值的，不同的节点类型对应的Value值也会不同
+1. 若节点类型是叶子节点，Value存储的是一个数据项的内容
+2. 若节点类型是拓展节点，Value存储的是孩子节点的哈希值
+3. 若节点类型是分支节点，Value值存储的是刚好在分支节点结束的值，若没有节点在分支节点中结束时，Value值没有存储数据
+<image src = "/docs/images/node_example.png"></image>  
+前缀树是用来存储key值的，连接起来的值是key值，叶子节点的最后的值是value，则构成<K,V>  
+而MPT树中的Value是通过RLP（Recursive Length Prefix 递归长度前缀编码）序列化后得到的。RLP主要用于以太坊中数据的网络传输和持久化存储。
 
 
+
+
+
+
+
+
+参考文档：  
+[MPT树详解-CHN](https://zhuanlan.zhihu.com/p/133718794)  
+[MPT树解释-ENG](https://medium.com/@chiqing/merkle-patricia-trie-explained-ae3ac6a7e123)   
+[以太坊数据序列化RLP编码/解码原理](https://cloud.tencent.com/developer/article/1705227)

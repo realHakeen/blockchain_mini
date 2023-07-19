@@ -60,7 +60,7 @@ block的字段设计：
 4. Txpool的设计，每个节点都维护着自己的Subpool，Subpool之间如何互通？
 
 ## 机制研究
-我们一个一个来解决：
+我们一个一个来解决：  
 【WIP】[该使用什么哈希函数？](./docs/research/chooseHashFunc.md)  
 【WIP】[交易池子txpool如何组织？](./docs/research/txpoolDesign.md)  
 【WIP】[矿工机制的设计:Worker的选择](./docs/research/workerMechenism.md)  
