@@ -25,7 +25,7 @@
 1. from：该交易的发起人
 2. to：该交易的接受人
 3. amount：转账的数量
-4. fee 转账需要的费用（需要设置priority fee，txpool就可以用fee排序，还是tx统一费用按照fcfs的方法来进行排序？暂时还没想好）
+4. fee 转账需要的费用（为了简洁和可拓展性我们暂时以fcfs）
 5. data：转账携带的数据
 
 
@@ -61,17 +61,12 @@ block的字段设计：
 
 ## 机制研究
 我们一个一个来解决：  
-【WIP】[该使用什么哈希函数？](./docs/research/chooseHashFunc.md)  
+[该使用什么哈希函数？](./docs/research/chooseHashFunc.md)  
 【WIP】[交易池子txpool如何组织？](./docs/research/txpoolDesign.md)  
 【WIP】[矿工机制的设计:Worker的选择](./docs/research/workerMechenism.md)  
 【WIP】[交易和区块的广播，同步机制](./docs/research/syncMechanism.md)  
 【WIP】[区块的共识机制以及共识节点的选择](./docs/research/Consensus.md)  
 【WIP】[底层数据库的设计](./docs/research/DataBase.md)  
-
-
-
-
-
 
 
 
