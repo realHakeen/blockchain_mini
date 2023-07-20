@@ -62,6 +62,8 @@ block的字段设计：
 ## 机制研究
 我们一个一个来解决：  
 [该使用什么哈希函数？](./docs/research/chooseHashFunc.md)  
+
+【WIP】[地址的生成——ECDSA函数](./docs/research/ECDSA.md)
 【WIP】[交易池子txpool如何组织？](./docs/research/txpoolDesign.md)  
 【WIP】[矿工机制的设计:Worker的选择](./docs/research/workerMechenism.md)  
 【WIP】[交易和区块的广播，同步机制](./docs/research/syncMechanism.md)  
