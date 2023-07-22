@@ -2,7 +2,7 @@
 <image src = "./docs/images/LOGO.png"></image>
 这条链是一个简单的区块链mini demo，我们尝试使用Rust语言进行区块链的构建，我们给一个简单的名称就定为以太坊下一次23年底布拉格升级的名字——Prague。
 
-我们是一点点扩充的，该开始只是一条最简单的链，相当于是作为我们练习Rust+区块链开发的第一个作品，我们还将在docs文档里面介绍我们的想法以及在coding过程中需要扩充的东西以及其研究，我们尽量模块化以方便后续的扩充。
+该开始只是一条最简单的链，相当于是作为我们练习Rust+区块链开发的第一个作品，我们是一点点扩充的，设计是**从顶层至底层的**，就是一个想法开始，因此我是没有明确的ddl的，因为在搭建的过程中，会发现有很多细节需要进行研究，我们还将在docs文档里面介绍我们的想法以及在coding过程中需要扩充的东西以及其研究，我们尽量**模块化**以方便后续的扩充，我们所有的研究都是基于以太坊的现行方案。
 ## 初始架构
 首先，我进行了基本研究。每一条区块链都是一笔交易去触发，然后需要一个block，一个blockchain等struct。以下是最基本的架构以及设计的原因：
 
@@ -36,6 +36,7 @@
 我们设计一下block：矿工打包多少个交易即可呢？不可能一直打包交易没有上限吧，因此我们设计两个
 1. 数量到达：当转账的tx数量达到至多100条则打包成一个块。
 2. 时间到达：当时间大约在12s左右时，我们打包成一个块。
+相关研究在：[以太坊的区块设计](https://ethereum.org/en/developers/docs/blocks/)
 
 block的字段设计：
 1. BlockHash 用来记录区块的整个哈希值
@@ -62,8 +63,8 @@ block的字段设计：
 ## 机制研究
 我们一个一个来解决：  
 [该使用什么哈希函数？](./docs/research/chooseHashFunc.md)  
-
-【WIP】[地址的生成——ECDSA函数](./docs/research/ECDSA.md)
+[地址的生成——ECDSA函数](./docs/research/ECDSA.md)  
+【WIP】[以太坊的代币经济学](./docs/research/tokennomics.md)  
 【WIP】[交易池子txpool如何组织？](./docs/research/txpoolDesign.md)  
 【WIP】[矿工机制的设计:Worker的选择](./docs/research/workerMechenism.md)  
 【WIP】[交易和区块的广播，同步机制](./docs/research/syncMechanism.md)  

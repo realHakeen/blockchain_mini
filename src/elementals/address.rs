@@ -3,7 +3,7 @@ use std::clone;
 
 use secp256k1::hashes::sha256;
 use secp256k1::rand::rngs::OsRng;
-use secp256k1::{ecdsa, PublicKey, Secp256k1, SecretKey};
+use secp256k1::{PublicKey, Secp256k1, SecretKey};
 
 /// 我们的Adress类型是用来标记单一账户地址的，privatekey是通过secp256k1生成；
 /// Adress是通过ECDSA(keccak256)进行生成的。
