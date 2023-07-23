@@ -45,24 +45,23 @@ EIP-1559具备自动的寻找市场最佳价格的机制，因为过去需要用
 
 以太坊EIP-1559，使用了固定价格拍卖，取代了第一价格拍卖，这使得用户对于未来的Gas Fee可预测，支付的起就买，支付不起就暂时不买。区块空间俨然已经成为了一种经济学上的东西。每个人为区块空间可预测的付费。
 
-### 关于Prague升级对其影响
-EIP-4844引入了全新的交易格式Blob，这让以太坊的交易分为两种，一种是基于EIP-1559的普通交易（15M-30M ），一种的基于EIP-4844的Layer2交易（一个blob的大小是128KB，一笔交易可以携带两个blob，也就是25KB，一个区块目标blob数量在8个，最大16个，也就是1MB-2MB之间）。
+### 关于eip-4844
+EIP-4844引入了全新的交易格式Blob，这让以太坊的交易分为两种，一种是基于EIP-1559的普通交易（15M-30M ），一种的基于EIP-4844的Layer2交易（一个blob的大小是128KB，一笔交易可以携带两个blob，也就是258KB，每个块目标是3个blob (0.375 MB) 和最大6个 blob (0.75 MB)）。此 EIP 使每个信标块的带宽要求最多增加约 0.75 MB。这比当今区块的理论最大大小（30M Gas / 每个 calldata 字节 16 Gas = 1.875M 字节）大 40%。
 目前，Layer2与普通用户在竞争极其有限的区块空间，但是随着未来Prague升级的引入，以太坊历史上第一次将有一个多维费用市场，为以太坊区块空间创建两种价格——**一个用于数据，一个用于执行**。两个现货市场将使用独立但相似的定价/拍卖机制。然而，考虑到数据块空间与执行块空间的消费者和使用情况的差异，两个市场之间可能会存在定价差异。以前layer2上传的数据存储在calldata内，现在存储在blob内。**calldata中每个0字节byte消耗4gas，非0字节每byte消耗16gas**，价格是线性的，且calldata 的大小是无直接限制的，根据layer2上传的数据来定价，当然会受制于天花板，就是区块的gas limit。
 数据gas市场的gas价格机制如下所示：
 $data_gasprice = MIN\_DATA\_GASPRICE * e**(excess\_data\_gas / DATA\_GASPRICE\_UPDATE\_FRACTION)$
 其中，与 EIP-1559 一样，它是一个自我修正公式：随着超额量增加，其数量呈$data\_gasprice$指数级增长，减少使用量并最终迫使超额量回落。
 
-
-我们来计算一下zk rollup所需消耗的gas fee ，zk-rollup的gas开销有两部分，而用户的开销需要涵盖三部分，我们分别进行计算。
-* zk-rollup视角的开销：上传batch，将数据放在calldata内，calldata内1Byte = 16gas，而blob内1Byte = 3gas。
-
-
-
-
+### Prague的设计
+我们的设计是基于以太坊相同的base fee + priority fee的经济模型。跳转->[txpool设计](/docs/research/txpoolDesign.md)
 
 
 ### 参考文档
 [以太坊代币经济学设计机制](https://timroughgarden.org/papers/eip1559.pdf)
 [以太坊代币经济学2022回顾](https://decentralizedthoughts.github.io/2022-03-10-eip1559/)  
-[EIP 1559 常见问题解答](https://notes.ethereum.org/@vbuterin/eip-1559-faq)
+[EIP-1559 常见问题解答](https://notes.ethereum.org/@vbuterin/eip-1559-faq)
 [区块空间的思考](https://frontier.tech/ethereums-blockspace-future)  
+[EIP-4844提案](https://eips.ethereum.org/EIPS/eip-4844)  
+[Vitalik的EIP-1559论述](https://ethresear.ch/t/multidimensional-eip-1559/11651)  
+[Proto-Danksharding FAQ](https://notes.ethereum.org/@vbuterin/proto_danksharding_faq#If-data-is-deleted-after-30-days-how-would-users-access-older-blobs)  
+
