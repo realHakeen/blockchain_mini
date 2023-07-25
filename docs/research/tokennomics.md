@@ -9,9 +9,9 @@
 
 ### tokenEconimics
 以太坊的经济机制一直以来都是First-price auction，现在引入了EIP-1559，将最大区块空间从12.5M，该成了15M-30M，**我们的目标traget block usage应该在50%，也就是15M**。当区块空间每增大12.5%，那么base fee就会增大，具体计算公式如下：
-base fee $r_{cur}$
-the prev block base fee $r_{pred}$
-size of the predecessor block $s_{pred}$
+base fee $r_{cur}$  
+the prev block base fee $r_{pred}$  
+size of the predecessor block $s_{pred}$  
 
 那么整个公式就是：$r_{cur} := r_{pred}* (1+ \frac{1}{8} * \frac{s_{pred}-s_{target}}{s_{target}})$
 
@@ -47,13 +47,43 @@ EIP-1559具备自动的寻找市场最佳价格的机制，因为过去需要用
 
 ### 关于eip-4844
 EIP-4844引入了全新的交易格式Blob，这让以太坊的交易分为两种，一种是基于EIP-1559的普通交易（15M-30M ），一种的基于EIP-4844的Layer2交易（一个blob的大小是128KB，一笔交易可以携带两个blob，也就是258KB，每个块目标是3个blob (0.375 MB) 和最大6个 blob (0.75 MB)）。此 EIP 使每个信标块的带宽要求最多增加约 0.75 MB。这比当今区块的理论最大大小（30M Gas / 每个 calldata 字节 16 Gas = 1.875M 字节）大 40%。
-目前，Layer2与普通用户在竞争极其有限的区块空间，但是随着未来Prague升级的引入，以太坊历史上第一次将有一个多维费用市场，为以太坊区块空间创建两种价格——**一个用于数据，一个用于执行**。两个现货市场将使用独立但相似的定价/拍卖机制。然而，考虑到数据块空间与执行块空间的消费者和使用情况的差异，两个市场之间可能会存在定价差异。以前layer2上传的数据存储在calldata内，现在存储在blob内。**calldata中每个0字节byte消耗4gas，非0字节每byte消耗16gas**，价格是线性的，且calldata 的大小是无直接限制的，根据layer2上传的数据来定价，当然会受制于天花板，就是区块的gas limit。
+目前，Layer2与普通用户在竞争极其有限的区块空间，但是随着未来Dencun升级的引入，以太坊历史上第一次将有一个多维费用市场，为以太坊区块空间创建两种价格——**一个用于数据，一个用于执行**。两个现货市场将使用独立但相似的定价/拍卖机制。然而，考虑到数据块空间与执行块空间的消费者和使用情况的差异，两个市场之间可能会存在定价差异。以前layer2上传的数据存储在calldata内，现在存储在blob内。**calldata中每个0字节byte消耗4gas，非0字节每byte消耗16gas**，价格是线性的，且calldata 的大小是无直接限制的，根据layer2上传的数据来定价，当然会受制于天花板，就是区块的gas limit。
 数据gas市场的gas价格机制如下所示：
 $data_gasprice = MIN\_DATA\_GASPRICE * e**(excess\_data\_gas / DATA\_GASPRICE\_UPDATE\_FRACTION)$
 其中，与 EIP-1559 一样，它是一个自我修正公式：随着超额量增加，其数量呈$data\_gasprice$指数级增长，减少使用量并最终迫使超额量回落。
 
+### 以太坊的质押收益
+以太坊的POS质押收益取决于以下几个因素：
+
+* 质押的ETH数量：每个验证者需要质押至少32个ETH，才能参与共识层的验证和出块，以获得奖励。  
+* 网络中的总质押量：网络中质押的ETH越多，每个验证者的收益率就越低，反之亦然。这是为了平衡网络的安全性和可用性。  
+* 验证者的在线时间和行为：验证者需要保持在线并按照协议规则进行验证和出块，否则会受到惩罚，损失部分或全部质押的ETH。如果验证者长时间离线或作恶，可能会被逐出网络，失去质押资格。  
+* 网络的利率参数：网络根据总质押量和验证者的在线率，动态调整每个区块的基础奖励和惩罚。这些参数旨在保持网络的激励机制和经济模型。  
+
+
+
 ### Prague的设计
-我们的设计是基于以太坊相同的base fee + priority fee的经济模型。跳转->[txpool设计](/docs/research/txpoolDesign.md)
+我们的设计是基于以太坊相同的base fee + priority fee的经济模型。跳转->[txpool设计](/docs/research/txpoolDesign.md)，然后需要创建一个原生代币，PRA，作为我们的支付代币。
+
+### PRA代币的经济模型
+这是一个比较复杂的模块。需要解决以下几个问题：
+* 现有硬币数量是多少？还会添加多少？  
+* 供给是通货膨胀（增加）还是通货紧缩（减少）？  
+* 这些硬币是否有实用性，即除了交换之外还可以用于其他用途吗？  
+* 现实世界的用例是什么？  
+* 谁拥有大部分代币？它是分散的还是集中在少数几个账户中？  
+众所周知，btc是每四年减半一次，价格就会发生飙升，这个是周期性的经济模型导致的，而以太坊通过技术创新、代币销毁、使用率增加、POS等手段来让代币价格上涨，这是两种不同的代币刺激手段。  
+
+Prague选择使用最基本的Base Fee + Priority Fee进行经济模型的运转，我们的代币为PRA，位数是18位，最小单位是$mini$，Gas Fee的基本单位是$G$，$1G = 1 * 10^9 mini$。
+
+打包交易的矿工会得到Priority Fee，而Base Fee会被销毁，PRA唯一会生产的渠道就是给POS共识节点进行质押，维护网络共识获得的收益。因此我们的系统也分拆解成两部分，一个是执行层负责打包交易，预执行状态，生成区块。另一个是共识层，负责sync，完成区块上链。整体PRA的代币数量是根据生态系统内使用数量而定，越多人使用销毁的Base Fee就越多，那么当Base Fee大于区块质押能产生的PRA，则整个系统的经济模型陷入通缩。
+
+由于是demo，因此我们设计，刚开始运行节点，注册地址的用户，将能够获得1000枚PRA，作为POS或者提交交易的Gas Fee。
+Base Fee，最低为8。Base Fee的上涨遵循Ethereum的公式，
+$r_{cur} := 20* (1+ \frac{1}{8} * \frac{s_{pred}-s_{target}}{1/2}) = 21$  
+
+
+
 
 
 ### 参考文档
@@ -64,4 +94,5 @@ $data_gasprice = MIN\_DATA\_GASPRICE * e**(excess\_data\_gas / DATA\_GASPRICE\_U
 [EIP-4844提案](https://eips.ethereum.org/EIPS/eip-4844)  
 [Vitalik的EIP-1559论述](https://ethresear.ch/t/multidimensional-eip-1559/11651)  
 [Proto-Danksharding FAQ](https://notes.ethereum.org/@vbuterin/proto_danksharding_faq#If-data-is-deleted-after-30-days-how-would-users-access-older-blobs)  
-
+[代币经济学设计](https://tokenomicsdao.xyz/blog/tokenomics-101/tokenomics-101-bitcoin-ethereum/)
+[质押收益计算](https://zhuanlan.zhihu.com/p/298096263)  
