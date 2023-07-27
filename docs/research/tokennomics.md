@@ -60,7 +60,32 @@ $data_gasprice = MIN\_DATA\_GASPRICE * e**(excess\_data\_gas / DATA\_GASPRICE\_U
 * 验证者的在线时间和行为：验证者需要保持在线并按照协议规则进行验证和出块，否则会受到惩罚，损失部分或全部质押的ETH。如果验证者长时间离线或作恶，可能会被逐出网络，失去质押资格。  
 * 网络的利率参数：网络根据总质押量和验证者的在线率，动态调整每个区块的基础奖励和惩罚。这些参数旨在保持网络的激励机制和经济模型。  
 
+### POS收益
+POS收益来自于代币的额外释放，我们来看看以太坊的代币释放机制如何设计的。以太坊需要32个ETH才能进行质押，但是[第111次共识层会议](https://www.youtube.com/watch?v=ybgQuRcz9sg&ab_channel=Ethereum)有提议将门槛提高到2048个，那这会极大的降低去中心化程度，一定程度降低安全性，但是好处是门槛提高意味着网络的沟通成本下降，整体网络性能将变好，导致网络拥堵问题得到一定的解决，但是其收益与损失相比，我们无从得知。
+在区块链网络中，epoch是决定某些事件何时发生的一段时间。例如，奖励分配的速率或何时**分配一组新的验证器来验证交易**。使用纪元的区块链协议因定义纪元的时间段而异。对于 PoS 以太坊，每 32 个时隙（1个slot就是一个出块时间12s，32个slot就是6.4 分钟）发生一个纪元(也就是每32个slot会更改一次委员会)。
+epoch中的每个时隙代表验证者委员会（至少 128 名验证者组成的组）的设定时间，以提议并证明（投票）新区块的有效性。每个时期有32组委员会。当一个委员会被分配到一个区块后，从该委员会的 128 名成员中随机选出一名人作为区块提议者。该人是唯一可以提出新交易区块的人，而其他 127 人对该提案进行投票并证明交易。
+一旦多数人同意，该区块就会被添加到区块链中，并且提出该区块的验证者会根据公式计算收到可变数量的 ETH 。因为真实的Ethereum的收益包括了POS+MEV收益，因此很难进行计算，我们只进行基本的POS公式计算。
+$base\_reward = effective\_balance * (\frac{base\_reward\_factor} {(base\_rewards\_per\_epoch * sqrt(sum(active\_balance)))})$
+我们来讲解一下：
+其中，$base\_reward\_factor$ 是 64，$base\_rewards\_per\_epoch$ 是 4，$sum(active balance)$ 是所有活跃验证者的质押以太币总数。
+这意味着基础奖励与验证者的有效余额成正比，与网络中的验证者数量成反比。 验证者越多，整体发行量越大（如 $sqrt(N)$），但每个验证者的 $base\_reward$ 越小（如$1/sqrt(N)$）。 这些因素影响质押节点的年化利率。
+总奖励由五个部分之和组成，每个部分都有一个权重，决定每个部分在总奖励中的比重。 这些部分是：
+1. 来源投票：验证者给正确的来源检查点进行了及时投票  
+2. 目标投票：验证者给正确的目标检查点进行了及时投票  
+3. 头部投票：验证者给正确的头部区块进行了及时投票  
+4. 同步委员会奖励：验证者参与了同步委员会  
+5. 提议者奖励：验证者在正确的时隙提议了区块  
 
+来源检查点和目标检查点是以太坊用于实现最终确认性的机制，来源检查点是验证者投票时认定的上一个时段的检查点，目标检查点是验证者投票时推举的新的时段的检查点。如果一个检查点得到了 **2/3 的总余额**支持，那么该检查点就被合理化了。如果一个合理化的检查点的下一个时段的检查点也被合理化了，那么前一个检查点就被敲定了。
+每个部分的类型以及其权重，如下所示：  
+* TIMELY_SOURCE_WEIGHT    uint64(14)  
+* TIMELY_TARGET_WEIGHT    uint64(26)  
+* TIMELY_HEAD_WEIGHT  uint64(14)  
+* SYNC_REWARD_WEIGHT  uint64(2)  
+* PROPOSER_WEIGHT uint64(8)  
+
+这些权重加起来等于 64。 奖励的计算方法是适用权重的总和除以 64。 如果验证者及时给来源、目标和头部投票，提议一个区块以及参与同步委员会，他们就能获取 $64/64 * base\_reward == base\_reward$。 然而，验证者通常不是区块提议者，所以它们的最大奖励是 $(64-8) /64 * base\_reward == 7/8 * base\_reward$。 既不是区块提议者，也不参与同步委员会的验证者能收到 $(64-8-2)/ 64 * base\_reward == 6.75/8 * base\_reward$。
+当然还有其他的激励激励快速进行验证，比如$inclusion\_delay\_reward$，我们不与赘述。
 
 ### Prague的设计
 我们的设计是基于以太坊相同的base fee + priority fee的经济模型。跳转->[txpool设计](/docs/research/txpoolDesign.md)，然后需要创建一个原生代币，PRA，作为我们的支付代币。
@@ -72,17 +97,22 @@ $data_gasprice = MIN\_DATA\_GASPRICE * e**(excess\_data\_gas / DATA\_GASPRICE\_U
 * 这些硬币是否有实用性，即除了交换之外还可以用于其他用途吗？  
 * 现实世界的用例是什么？  
 * 谁拥有大部分代币？它是分散的还是集中在少数几个账户中？  
+
 众所周知，btc是每四年减半一次，价格就会发生飙升，这个是周期性的经济模型导致的，而以太坊通过技术创新、代币销毁、使用率增加、POS等手段来让代币价格上涨，这是两种不同的代币刺激手段。  
 
-Prague选择使用最基本的Base Fee + Priority Fee进行经济模型的运转，我们的代币为PRA，位数是18位，最小单位是$mini$，Gas Fee的基本单位是$G$，$1G = 1 * 10^9 mini$。
+Prague选择使用最基本的Base Fee + Priority Fee进行经济模型的运转，我们的代币为PRA，初始数量为10，000，000PAR，位数是18位，最小单位是$mini$，Gas Fee的基本单位是$G$，$1G = 1 * 10^9 mini$。
 
 打包交易的矿工会得到Priority Fee，而Base Fee会被销毁，PRA唯一会生产的渠道就是给POS共识节点进行质押，维护网络共识获得的收益。因此我们的系统也分拆解成两部分，一个是执行层负责打包交易，预执行状态，生成区块。另一个是共识层，负责sync，完成区块上链。整体PRA的代币数量是根据生态系统内使用数量而定，越多人使用销毁的Base Fee就越多，那么当Base Fee大于区块质押能产生的PRA，则整个系统的经济模型陷入通缩。
 
-由于是demo，因此我们设计，刚开始运行节点，注册地址的用户，将能够获得1000枚PRA，作为POS或者提交交易的Gas Fee。
+由于是demo，因此我们设计，刚开始运行全节点，注册地址的用户，将能够获得1000枚PRA，作为POS或者提交交易的Gas Fee。
 Base Fee，最低为8。Base Fee的上涨遵循Ethereum的公式，
 $r_{cur} := 20* (1+ \frac{1}{8} * \frac{s_{pred}-s_{target}}{1/2}) = 21$  
 
+为了轻量，我们直接使用以太坊的这个最基本的公式：
+$base\_reward = effective\_balance * (\frac{base\_reward\_factor} {(base\_rewards\_per\_epoch * sqrt(sum(active\_balance)))})$
 
+### 惩罚验证者
+如果验证者行为不诚实或离线，则会受到处罚。例如，提出多个区块（模棱两可）或提交矛盾的证明（投票）会导致称为削减的惩罚，这意味着验证者会损失一定比例的质押ETH。被削减的以太币数量取决于同时被削减的验证者数量，也称为“相关性惩罚”。其范围可以从单个验证者的 1% 到验证者权益的 100% 被削减。
 
 
 
@@ -95,4 +125,5 @@ $r_{cur} := 20* (1+ \frac{1}{8} * \frac{s_{pred}-s_{target}}{1/2}) = 21$
 [Vitalik的EIP-1559论述](https://ethresear.ch/t/multidimensional-eip-1559/11651)  
 [Proto-Danksharding FAQ](https://notes.ethereum.org/@vbuterin/proto_danksharding_faq#If-data-is-deleted-after-30-days-how-would-users-access-older-blobs)  
 [代币经济学设计](https://tokenomicsdao.xyz/blog/tokenomics-101/tokenomics-101-bitcoin-ethereum/)
-[质押收益计算](https://zhuanlan.zhihu.com/p/298096263)  
+[质押收益计算](https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/rewards-and-penalties/)  
+[Serenity Design Rationale by Vitalik](https://notes.ethereum.org/@vbuterin/serenity_design_rationale?type=view#Serenity-Design-Rationale)  
