@@ -64,11 +64,11 @@ block的字段设计：
 我们一个一个来解决：  
 [该使用什么哈希函数？](./docs/research/chooseHashFunc.md)  
 [地址的生成——ECDSA函数](./docs/research/ECDSA.md)  
-【WIP】[以太坊的代币经济学](./docs/research/tokennomics.md)  
-【WIP】[交易池子txpool如何组织？](./docs/research/txpoolDesign.md)  
+[以太坊的代币经济学](./docs/research/tokennomics.md)  
+【WIP】[交易的生命周期](./docs/research/tx_life_time.md)  
 【WIP】[矿工机制的设计:Worker的选择](./docs/research/workerMechenism.md)  
 【WIP】[交易和区块的广播，同步机制](./docs/research/syncMechanism.md)  
-【WIP】[区块的共识机制以及共识节点的选择](./docs/research/Consensus.md)  
+【WIP】[Casper FFG共识机制以及共识节点的选择](./docs/research/Consensus.md)  
 【WIP】[底层数据库的设计](./docs/research/DataBase.md)  
 
 

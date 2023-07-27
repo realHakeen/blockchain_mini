@@ -84,11 +84,14 @@ $base\_reward = effective\_balance * (\frac{base\_reward\_factor} {(base\_reward
 * SYNC_REWARD_WEIGHT  uint64(2)  
 * PROPOSER_WEIGHT uint64(8)  
 
-这些权重加起来等于 64。 奖励的计算方法是适用权重的总和除以 64。 如果验证者及时给来源、目标和头部投票，提议一个区块以及参与同步委员会，他们就能获取 $64/64 * base\_reward == base\_reward$。 然而，验证者通常不是区块提议者，所以它们的最大奖励是 $(64-8) /64 * base\_reward == 7/8 * base\_reward$。 既不是区块提议者，也不参与同步委员会的验证者能收到 $(64-8-2)/ 64 * base\_reward == 6.75/8 * base\_reward$。
-当然还有其他的激励激励快速进行验证，比如$inclusion\_delay\_reward$，我们不与赘述。
+这些权重加起来等于 64。 奖励的计算方法是适用权重的总和除以 64。 如果验证者及时给来源、目标和头部投票，提议一个区块以及参与同步委员会，他们就能获取 $64/64 * base\_reward == base\_reward$。 然而，验证者通常不是区块提议者，所以它们的最大奖励是 
+$\frac{(64-8)}{64} * base\_reward == \frac{7}{8} * base\_reward$
+既不是区块提议者，也不参与同步委员会的验证者能收到 
+$\frac{(64-8-2)}{64} * base\_reward == \frac{6.75}{8} * base\_reward$
+当然还有其他的激励激励快速进行验证，比如$ inclusion\_delay\_reward $，我们不与赘述。
 
 ### Prague的设计
-我们的设计是基于以太坊相同的base fee + priority fee的经济模型。跳转->[txpool设计](/docs/research/txpoolDesign.md)，然后需要创建一个原生代币，PRA，作为我们的支付代币。
+我们的设计是基于以太坊相同的base fee + priority fee的经济模型。跳转->[tx的生命周期](/docs/research/tx_life_time.md)，然后需要创建一个原生代币，PRA，作为我们的支付代币。
 
 ### PRA代币的经济模型
 这是一个比较复杂的模块。需要解决以下几个问题：
