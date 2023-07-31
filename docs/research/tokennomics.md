@@ -13,7 +13,9 @@ base fee $r_{cur}$
 the prev block base fee $r_{pred}$  
 size of the predecessor block $s_{pred}$  
 
-那么整个公式就是：$r_{cur} := r_{pred}* (1+ \frac{1}{8} * \frac{s_{pred}-s_{target}}{s_{target}})$
+那么整个公式就是：
+
+$r_{cur} := r_{pred}* (1+ \frac{1}{8} * \frac{s_{pred}-s_{target}}{s_{target}})$
 
 * 如果上一个区块使用率正好是 50%，Base Fee 保持不变。  
 * 如果上一个区块使用率正好满载 100%，Base Fee 会提高 12.5%。  
