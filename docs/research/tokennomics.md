@@ -53,8 +53,10 @@ EIP-1559具备自动的寻找市场最佳价格的机制，因为过去需要用
 ### 关于eip-4844
 EIP-4844引入了全新的交易格式Blob，这让以太坊的交易分为两种，一种是基于EIP-1559的普通交易（15M-30M ），一种的基于EIP-4844的Layer2交易（一个blob的大小是128KB，一笔交易可以携带两个blob，也就是258KB，每个块目标是3个blob (0.375 MB) 和最大6个 blob (0.75 MB)）。此 EIP 使每个信标块的带宽要求最多增加约 0.75 MB。这比当今区块的理论最大大小（30M Gas / 每个 calldata 字节 16 Gas = 1.875M 字节）大 40%。
 目前，Layer2与普通用户在竞争极其有限的区块空间，但是随着未来Dencun升级的引入，以太坊历史上第一次将有一个多维费用市场，为以太坊区块空间创建两种价格——**一个用于数据，一个用于执行**。两个现货市场将使用独立但相似的定价/拍卖机制。然而，考虑到数据块空间与执行块空间的消费者和使用情况的差异，两个市场之间可能会存在定价差异。以前layer2上传的数据存储在calldata内，现在存储在blob内。**calldata中每个0字节byte消耗4gas，非0字节每byte消耗16gas**，价格是线性的，且calldata 的大小是无直接限制的，根据layer2上传的数据来定价，当然会受制于天花板，就是区块的gas limit。
-数据gas市场的gas价格机制如下所示：
-$data_gasprice = MIN\_DATA\_GASPRICE * e**(excess\_data\_gas / DATA\_GASPRICE\_UPDATE\_FRACTION)$
+数据gas市场的gas价格机制如下所示：  
+
+data_gasprice = MIN_DATA_GASPRICE * e**(excess_data_gas / DATA_GASPRICE_UPDATE_FRACTION)
+
 其中，与 EIP-1559 一样，它是一个自我修正公式：随着超额量增加，其数量呈$data\_gasprice$指数级增长，减少使用量并最终迫使超额量回落。
 
 ### 以太坊的质押收益
