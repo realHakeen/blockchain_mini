@@ -8,7 +8,8 @@
 共识节点收取质押奖励，这是由验证者在信标链上质押32个eth，并参与区块验证和提案而获得的。质押奖励与质押总量、验证者在线率、验证者数量等因素有关。
 
 ### tokenEconimics
-以太坊的经济机制一直以来都是First-price auction，现在引入了EIP-1559，将最大区块空间从12.5M，该成了15M-30M，**我们的目标traget block usage应该在50%，也就是15M**。当区块空间每增大12.5%，那么base fee就会增大，具体计算公式如下：
+以太坊的经济机制一直以来都是First-price auction，现在引入了EIP-1559，将最大区块空间从12.5M，该成了15M-30M，**我们的目标traget block usage应该在50%，也就是15M**。当区块空间每增大12.5%，那么base fee就会增大，具体计算公式如下：  
+
 base fee $r_{cur}$  
 the prev block base fee $r_{pred}$  
 size of the predecessor block $s_{pred}$  
