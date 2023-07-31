@@ -24,8 +24,10 @@ size of the predecessor block $s_{pred}$
 
 我们假设0号区块的Base Fee是20，使用了70%的区块空间，那么下一个区块的Base fee是：
 $r_{cur} := 20* (1+ \frac{1}{8} * \frac{s_{pred}-s_{target}}{1/2}) = 21$  
-1号区块继续保持70%，则有如下图示：
-<image src = "/docs/images/gas_fee_increase.png"></image>
+1号区块继续保持70%，则有如下图示：  
+
+<image src = "/docs/images/gas_fee_increase.png"></image>  
+
 因此引入该公式作为gas fee之后，整个base fee能够预测，对整个经济系统都有一定的把控。
 根据参考论文所述，认为EIP-1559之所以这样设计是因为：  
 
