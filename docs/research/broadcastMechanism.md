@@ -28,11 +28,17 @@
 * 其他因素：节点连接数量还可能受到网络带宽、硬件资源和网络拓扑结构等因素的限制。有些节点可能连接到特定的对等节点，例如矿池会与自己的矿工节点建立更多的连接，以便更有效地组织区块的挖掘。
 * 总的来说，节点的连接数量通常是一个权衡之间。连接到更多的节点可以提高网络的去中心化程度和可靠性，但同时也会增加网络流量和资源消耗。节点运营者需要根据自己的需求和网络条件，选择适当的连接数量来维护节点的正常运行和参与以太坊网络的顺畅通信。
 
-### 同步
-客户端实现应该对协议消息大小实施限制。底层 RLPx 传输将单个消息的大小限制为 16.7 MiB。eth 协议的实际限制较低，通常为 10 MiB。如果收到的消息大于限制，则应断开对等方的连接。
-除了对接收的消息进行硬限制之外，客户端还应对其发送的请求和响应施加“软”限制。建议的软限制因消息类型而异。限制请求和响应可确保并发活动（例如块同步和交易交换）在同一对等连接上顺利工作。
+### libp2p和devp2p
+在合并之前，以太坊仅使用devp2p ，一个专用的网络堆栈和一组网络协议，在某些方面与 libp2p 没有什么不同。尽管以太坊和 IPFS/libp2p 社区之间进行了谈判，希望采用一种解决方案而不是两种解决方案，但时机并不合适，以太坊附带了 devp2p 作为其解决方案。之后经过与protocol Labs的合作，共同开发了Gossipsub作为以太坊的传播协议，并且其成为了libp2p的协议栈之一，并且作为补充还有一个Discv5作为节点的发现协议。就是所有的工作都需要对于的标准和规范，我们才知道如何为以太坊建造客户端。
+节点使用的具体p2p协议的协议栈包括如下：
 
-
+* Transport : TCP  
+* Encryption : Noise  
+* Protocol Negotiation : Multistream Select 1.0
+* Stream Multiplexing: mplex or yamux
+* Messaging: GossipSub v1.1
+* Finding Nodes : Discv5  
+在[这个Github文档](https://github.com/ethereum/consensus-specs/blob/dev/specs/phase0/p2p-interface.md#design-decision-rationale)中，描述了为什么选择这些协议而不是其它替代品。  
 
 
 
@@ -40,3 +46,8 @@
 
 参考资料：  
 [以太坊交易如何传播](https://www.alchemy.com/overviews/transaction-propagation)  
+[以太坊广播协议](https://github.com/ethereum/devp2p/blob/master/caps/eth.md)  
+[以太坊权益证明共识规范](https://github.com/ethereum/consensus-specs/tree/dev)  
+[网络层](https://ethereum.org/pt/developers/docs/networking-layer/)  
+[libp2p与以太坊的历史渊源](https://blog.libp2p.io/libp2p-and-ethereum/)  
+
