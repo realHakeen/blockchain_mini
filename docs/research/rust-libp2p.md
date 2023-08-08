@@ -1,11 +1,11 @@
 # repository structure
-core/ : libp2p是所有的crates的依赖项，比如Trasnport和Streammuxer。
-transports/ : transport protocol的具体实现（重要）
-muxers/ : StreamMuxer的实现，比如(sub)stream multiplexing prtocols
-swarm/ : 是libp2p-swarm的Rust实现，主要提供了NetworkBehaviour & ConnectionHandler接口
-protocls/ : 基于libp2p-swarm实现的应用协议
-misc/ : Utility libraries
-libp2p/examples/ : exmaples of 内置的应用协议
+- core/ : libp2p是所有的crates的依赖项，比如Trasnport和Streammuxer。
+- transports/ : transport protocol的具体实现（重要）
+- muxers/ : StreamMuxer的实现，比如(sub)stream multiplexing prtocols
+- swarm/ : 是libp2p-swarm的Rust实现，主要提供了NetworkBehaviour & ConnectionHandler接口
+- protocls/ : 基于libp2p-swarm实现的应用协议
+- misc/ : Utility libraries
+- libp2p/examples/ : exmaples of 内置的应用协议
 
 # What is Publish/Subscribe
 在网络中能够发送Full-message和Metadata-only两种。发送Full-message的称为peers，发送Metadata-only的称为topics。
@@ -27,7 +27,7 @@ libp2p中，每1s（heartbeat）检查一次，并且graft和prune都发生在�
 ## connected to topic
 首先需要subscribe topic，以发送metadata。之后会选择一些节点作为peer，发送Full-message。
 **整个设计还是挺巧妙的**  
-- 这个topic其实相当于是发散网络的核心，并且作为发散网络的核心，也是网络冗余的保证，那么必然需要metadata-only数据来传输，不能full-message。
+- 这个topic其实相当于是发散网络的核心，并且作为**发散网络的核心**，也是网络冗余的保证，那么必然需要metadata-only数据来传输，不能full-message。topic是所有metadata-only消息传递能力节点组成的group。
 - 而且其实每个peers都是一样的，都保留了传输full-message的能力，一旦该节点无full-message的情况下，但是被其他节点选中为full-message，那么就可以从自身选中的peers获取full-message来传输给制定peers。  
 - 并且连接是双向的，双方都可以进行prune（裁剪，意味着只需要metadata）和graft（嫁接，意味着full-message）。
 
@@ -35,4 +35,15 @@ libp2p中，每1s（heartbeat）检查一次，并且graft和prune都发生在�
 
 ## Gossip
 值得注意的是，我们的最底层传输协议，实际上并不负责验证Message的真假，这一工作应该交给更上一级的来做。
+per second，每个peer都会发送给6个topic节点list。Gossip会提示节点是否遗漏message，如果多次遗漏，那么就会建立新的peers链接。
+
+## Fan-out
+Peers可以发送message给未subsribe的topics。首先选择6个订阅了的topic节点，然后将这6个节点记为fan-out节点。
+fan-out peering是单向的，如果想传递message，可以先传递给fan-out，然后fan-out负责在topic内广播。
+很多时候，fan-out节点只是临时的措施，fan-out节点会最终变成full-message节点，直到自己被纳入整个topic。
+
+<image src = "/docs/images/fanout_grafting_preference.png"></image>
+两分钟内未发送任何新的message，会自动prune成meta-data peering。
+
+
 
