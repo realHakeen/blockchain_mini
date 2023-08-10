@@ -10,4 +10,8 @@ Casper FFG 是一种元共识协议。它是一个覆盖层，可以在底层共
 FFG 部分代表“Friendly Finality Gadget”
 
 ## 以太坊的共识规范
-[这里是以太坊的共识规范](https://github.com/ethereum/consensus-specs)，我们能够查到每一次升级的共识层的设计。
+[这里是以太坊的共识规范](https://github.com/ethereum/consensus-specs)，我们能够查到每一次升级的共识层的设计。  
+
+<image src = "docs/images/ethereum_consensus_design_process.png"></image>
+
+这里陈列着所有以太坊共识层的升级规划以及进度。以上图片是已经完成了的升级，目前真正进行Deneb的共识层升级。
