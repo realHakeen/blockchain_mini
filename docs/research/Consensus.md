@@ -14,4 +14,4 @@ FFG 部分代表“Friendly Finality Gadget”
 
 <image src = "docs/images/ethereum_consensus_design_process.png"></image>
 
-这里陈列着所有以太坊共识层的升级规划以及进度。以上图片是已经完成了的升级，目前真正进行Deneb的共识层升级。
+这里陈列着所有以太坊共识层的升级规划以及进度。以上图片是已经完成了的升级，目前正在进行Deneb的共识层升级。

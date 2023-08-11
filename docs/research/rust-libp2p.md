@@ -45,5 +45,30 @@ fan-out peering是单向的，如果想传递message，可以先传递给fan-out
 <image src = "/docs/images/fanout_grafting_preference.png"></image>
 两分钟内未发送任何新的message，会自动prune成meta-data peering。
 
+## floodpsub
+gossipsub是使用gossip算法实现的pubsub specifications，而floodsub是其中一种实现。
+我们可以先了解floodsub。
+floodsub路由策略具有以下非常理想的属性：
+- 试试起来很简单  
+- 它最大程度地减少了延迟  
+- 它非常稳定，需要管理的逻辑和状态非常少  
+
+# gossipsub八卦网络路由
+gossipsub想要解决floodsub的一些问题，主要手段是将每个peer的degree施加上限，并且控制增强因子。
+gossipsub颠覆了常规的实现方式，不是使用topic，而是通过一个subset集合（称为mesh），send message给subset而不是整个topic，subset是在topic内进行选择的。
+
+当进入topic，peer会发送给subset Graft控制协议，而当离开topic会给subset发送prune。当subset内的peer收到来自其他peer的graft控制消息，那么它会将来源peer也加入到自己的mesh。所以如果peer A是peer B的mesh，那么peer B也是peer A的mesh。
+
+我们需要辨析的点在于，topic是用于subscripe和unsubscribe的，只是用来消息的同步的，但是mesh是用来传递full-message的，那么在topic内剩下的都传递metadata-only。
 
 
+
+以下是以太坊交易的全流程图示：  
+
+<image src = "/docs/images/lifecycle.png"></image>  
+我们能够看到，以太坊的共识层与执行层之间消息传递使用的协议是不一样的。接下来，我们看看以太坊的执行层消息传递协议。[执行层消息传递协议](/docs/research/Devp2p.md)  
+
+
+
+# 参考资料
+[gossipsub-v1.0](https://github.com/libp2p/specs/blob/master/pubsub/gossipsub/gossipsub-v1.0.md#motivations-and-prior-work)  
