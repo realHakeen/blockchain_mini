@@ -16,6 +16,7 @@ use Address;
 
 /// 首先发现的第一个问题就是设计Address类型。
 /// 因此我们构建了Adress的rs文件和research。跳转到（docs/research/ECDSA.md）
+/// 完成transaction的函数
 
 pub struct transaction {
     from: Address,
@@ -23,4 +24,8 @@ pub struct transaction {
     amount: usize,
     fee: usize,
     data: String,
+}
+
+impl transaction{
+
 }
