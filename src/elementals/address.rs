@@ -33,3 +33,9 @@ pub fn get_address(public_key: PublicKey) -> Vec<u8> {
     let address = serialize_address[serialize_address.len() - 20..].to_vec();
     address
 }
+//测试用户输入的srcrate_key是否符合要求，然后从私钥生成公钥
+
+pub fn get_public_key(secrate_key:SecretKey) -> PublicKey{
+    let secp = Secp256k1::new();
+    PublicKey::from_secret_key(&secp,&secrate_key)
+}
