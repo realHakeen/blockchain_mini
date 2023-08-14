@@ -1,10 +1,10 @@
 use std::{default, str::FromStr};
-use secp256k1::{Secp256k1, SecretKey};
-
-use crate::elementals::address;
-
+use secp256k1::{Secp256k1, SecretKey, PublicKey};
+use crate::elementals::address::{self, get_address, get_key_pair};
 pub struct Node{
-
+    public_key:PublicKey,
+    secrate_key:SecretKey,
+    address:Vec<u8>,
 }
 
 impl Node {
@@ -15,27 +15,39 @@ impl Node {
     //首先允许节点，然后初始化，包括成立一个地址或者输入已经有的地址
     //值得注意的是，我们的私钥保存方式，有两种本地文件和内存之中，一个更方便一个更安全
     //我们选择文件保存
-    pub fn init(){
+    pub fn new() -> Self{
         println!("Please enter the private key or generate a key pair:");
         println!("p for privatekey g for generate a key pair");
 
         let mut choose: String = String::new();
         let input = std::io::stdin().read_line(&mut choose).unwrap();
         choose.to_ascii_lowercase();
+
+        let (mut secrate_key,mut public_key) = get_key_pair();
+        let mut address:Vec<u8> = get_address(public_key);
+
         match choose.as_str() {
             "p" =>{
                 println!("please enter ur private key:");
                 let mut input_secrate_key = String::new();
-                std::io::stdin().read_line(&mut input_secrate_key);
-                let secrate_key = SecretKey::from_str(input_secrate_key.as_str()).unwrap();
-                address::get_public_key(secrate_key);
+                let result = std::io::stdin().read_line(&mut input_secrate_key);
+                if result.is_err() {
+                    println!("sorry for the input");
+                }
+                secrate_key = SecretKey::from_str(input_secrate_key.as_str()).unwrap();
+                public_key = address::get_public_key(secrate_key);
+                address = get_address(public_key);
             },
             "g" =>{
-
             },
             _ =>{
-
+                println!("Sorry for ur inputs ar wrong!");
             }
+        }
+        Self{
+            public_key,
+            secrate_key,
+            address
         }
     }
 
