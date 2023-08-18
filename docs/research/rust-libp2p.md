@@ -70,5 +70,6 @@ gossipsub颠覆了常规的实现方式，不是使用topic，而是通过一个
 
 
 
+
 # 参考资料
 [gossipsub-v1.0](https://github.com/libp2p/specs/blob/master/pubsub/gossipsub/gossipsub-v1.0.md#motivations-and-prior-work)  
