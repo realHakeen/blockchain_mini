@@ -33,7 +33,7 @@ from、to、nonce、value、gas price（base fee+ priority fee）、Receipt（EO
 为了取消以前的交易，我们需要从同一个账户向网络提交一个新的交易，**使用相同的nonce，但费用（gas price）更高**。
 节点会收到你的新交易，由于它支付的费用比之前的交易高，他们会先把它添加到区块链上。一个特定的账户其交易nonce只能使用一次，这意味着当他们把新的交易添加到区块链上时，旧的交易就会变得无效，并从内存池中删除。  
 
-<image src = "/docs/images/lifecycle.png"></image>  
+<image src = "../images/lifecycle.png"></image>  
 
 
 

@@ -8,6 +8,6 @@ edition = "2021"
 [dependencies]
 secp256k1 = {version = "0.27.0",features = ["rand-std","bitcoin-hashes-std"]}
 serde = "1.0.173"
-
+primitive-types = "0.12.1"
 
 
