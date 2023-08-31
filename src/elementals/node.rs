@@ -1,10 +1,13 @@
 use std::{default, str::FromStr};
 use secp256k1::{Secp256k1, SecretKey, PublicKey};
 use crate::elementals::address::{self, get_address, get_key_pair};
+use primitive_types::U256;
+
+// Node是我们对整个网络对象的抽象
 pub struct Node{
     public_key:PublicKey,
     secrate_key:SecretKey,
-    address:Vec<u8>,
+    address:Vec<u8>, //一个8位存储位（字节为单位）的不定长堆
 }
 
 impl Node {
@@ -52,8 +55,5 @@ impl Node {
     }
 
 
-    //是先是寻找其他的对等点peer，根据Discv4协议的specs设计
-    pub fn inquery(){
-        
-    }
+    
 }

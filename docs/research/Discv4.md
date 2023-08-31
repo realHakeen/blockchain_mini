@@ -1,11 +1,4 @@
-<!--
- * @Author: realHakeen yhk15802841343@gmail.com
- * @Date: 2023-08-13 15:54:16
- * @LastEditors: realHakeen yhk15802841343@gmail.com
- * @LastEditTime: 2023-08-18 15:58:14
- * @FilePath: /blockchain_mini/docs/research/Discv4.md
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
+
 # Kademila
 我们前面有论述过，Discv4是执行层的寻找节点的方案。而Discv4是源于Kademila + Ethereum's node discovery protocol进行搭建的。
 这个是一个什么协议呢？Kademila是一个分布式的哈希表，它specifies了网络的结构和信息交换的规则。他们使用UDP进行信息的交换。每个节点都有Node ID，不仅仅是identification，Kademila也用node ID定位values，相当于也是key。
@@ -20,7 +13,7 @@ Kademlia uses a **distance** calculation between two nodes. This distance is com
 
 **Kademlia是一种点对点分布式哈希表（DHT），它在容易出错的环境中也具有可证明的一致性和性能。使用一种基于异或指标的拓扑结构来路由查询和定位节点，这简化了算法并有助于证明。该拓扑结构有一个特点：每次消息交换都能够传递或强化有效信息。系统利用这些信息进行并发的异步查询，可以容忍节点故障，并且故障不会导致用户超时。**
 
-kademlialib：一个用Rust实现的高性能且可扩展的Kademlia DHT库。
+libp2p-kad：一个用Rust实现的高性能且可扩展的Kademlia DHT库。
 
 
 ## KAD算法要处理的问题

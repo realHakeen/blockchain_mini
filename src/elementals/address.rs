@@ -16,10 +16,7 @@ use primitive_types::{U256,H256};
 ///
 ///
 
-/// 地址是16进制，256位，则为32位的存储位，我们引进U256
-/// 
-pub type Address = U256;
-pub type bytes32 = H256;
+
 
 pub fn get_key_pair() -> (SecretKey, PublicKey) {
     let secp = Secp256k1::new();
@@ -31,7 +28,8 @@ pub fn get_key_pair() -> (SecretKey, PublicKey) {
     (secret_key, public_key)
 }
 
-//这里需要注意使用Vec可以避免内存拷贝的开销，因为基于堆的拷贝，是浅拷贝
+//这里需要注意使用Vec可以避免内存拷贝的开销，因为基于堆的拷贝，是浅拷贝，
+//地址是public_key serialize后的前20字节
 pub fn get_address(public_key: PublicKey) -> Vec<u8> {
     let serialize_address: [u8; 33] = public_key.serialize();
     let address = serialize_address[serialize_address.len() - 20..].to_vec();
