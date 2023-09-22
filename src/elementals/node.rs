@@ -1,13 +1,14 @@
 use std::{default, str::FromStr};
+use libp2p::PeerId;
 use secp256k1::{Secp256k1, SecretKey, PublicKey};
 use crate::elementals::address::{self, get_address, get_key_pair};
 use primitive_types::U256;
 
 // Node是我们对整个网络对象的抽象
 pub struct Node{
-    public_key:PublicKey,
+    pub public_key:PublicKey,
     secrate_key:SecretKey,
-    address:Vec<u8>, //一个8位存储位（字节为单位）的不定长堆
+    pub address:Vec<u8>, //一个8位存储位（字节为单位）的不定长堆
 }
 
 impl Node {
@@ -24,7 +25,7 @@ impl Node {
 
         let mut choose: String = String::new();
         let input = std::io::stdin().read_line(&mut choose).unwrap();
-        choose.to_ascii_lowercase();
+        choose.make_ascii_lowercase();
 
         let (mut secrate_key,mut public_key) = get_key_pair();
         let mut address:Vec<u8> = get_address(public_key);
@@ -47,10 +48,12 @@ impl Node {
                 println!("Sorry for ur inputs ar wrong!");
             }
         }
+        //pharse the public key to adjust to the libp2p public key
+
         Self{
             public_key,
             secrate_key,
-            address
+            address,
         }
     }
 
