@@ -4,7 +4,7 @@ use std::clone;
 use secp256k1::hashes::sha256;
 use secp256k1::rand::rngs::OsRng;
 use secp256k1::{PublicKey, Secp256k1, SecretKey};
-use primitive_types::{U256,H256};
+use primitive_types::{U256,H256, H160};
 
 /// 我们的Adress类型是用来标记单一账户地址的，privatekey是通过secp256k1生成；
 /// Adress是通过ECDSA(keccak256)进行生成的。
@@ -16,6 +16,7 @@ use primitive_types::{U256,H256};
 ///
 ///
 
+pub struct Address(H160);
 
 
 pub fn get_key_pair() -> (SecretKey, PublicKey) {
