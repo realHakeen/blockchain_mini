@@ -11,27 +11,30 @@ use primitive_types::*;
 /// 5. data：转账携带的数据
 /// 6. signature:签名
 ///
-///
-///
-///
-///
-///
+
 
 /// 首先发现的第一个问题就是设计Address类型。
 /// 因此我们构建了Adress的rs文件和research。跳转到（docs/research/ECDSA.md）,为了MVP原则，实现structureDesign.md的内容
-/// 完成transaction的函数
+/// transaction.rs内维护transaction pool池子
 
 pub struct transaction {
-    from: Address,
-    to:Address,
-    amount:U256,
-    base_gas:U256,
-    priority_fee:U256,
-    data:Vec<u8>,
-    signature:H256,
+    pub from: Address,
+    pub to:Address,
+    pub amount:U256,
+    pub base_gas:U256,
+    pub priority_fee:U256,
+    pub data:Vec<u8>,
+    pub signature:H256,
 }
 
+
 impl transaction{
+    
+}
+
+/// transactionpool内维护着目前待打包的transaction，首先我们完成自己的职责，写出transactionpool的基本职责，
+/// transactionpool
+pub struct TransactionPool{
     
 }
 

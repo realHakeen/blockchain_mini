@@ -11,6 +11,7 @@ Consensus: 负责共识模块，主要设计共识
 Blockchain: 负责维护该链
 TransactionPool: 负责维护交易池
 Validation: 负责验证交易
+Networking:负责节点之间的数据通信
 Account: 负责维护全局账户状态
 Miner: 矿工
 VM：虚拟机

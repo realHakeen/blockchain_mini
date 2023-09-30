@@ -16,7 +16,7 @@ use primitive_types::{U256,H256, H160};
 ///
 ///
 
-pub struct Address(H160);
+pub struct Address(pub H160);
 
 
 pub fn get_key_pair() -> (SecretKey, PublicKey) {
