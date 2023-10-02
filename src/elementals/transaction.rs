@@ -17,7 +17,7 @@ use primitive_types::*;
 /// 因此我们构建了Adress的rs文件和research。跳转到（docs/research/ECDSA.md）,为了MVP原则，实现structureDesign.md的内容
 /// transaction.rs内维护transaction pool池子
 
-pub struct transaction {
+pub struct Transaction {
     pub from: Address,
     pub to:Address,
     pub amount:U256,
@@ -28,13 +28,7 @@ pub struct transaction {
 }
 
 
-impl transaction{
-    
-}
-
-/// transactionpool内维护着目前待打包的transaction，首先我们完成自己的职责，写出transactionpool的基本职责，
-/// transactionpool
-pub struct TransactionPool{
+impl Transaction{
     
 }
 

@@ -27,4 +27,5 @@ impl Blockchain {
     pub fn add_saledBlock(mut self,_saled_block:Block){
         self.block.push(_saled_block);
     }
+    
 }

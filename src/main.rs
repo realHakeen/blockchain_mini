@@ -8,6 +8,9 @@
  */
 mod elementals;
 mod Blockchain;
+mod TransactionPool;
+mod Miner;
+mod Validation;
 
 fn main() {
     
