@@ -16,7 +16,7 @@ use primitive_types::*;
 /// 首先发现的第一个问题就是设计Address类型。
 /// 因此我们构建了Adress的rs文件和research。跳转到（docs/research/ECDSA.md）,为了MVP原则，实现structureDesign.md的内容
 /// transaction.rs内维护transaction pool池子
-
+#[derive(Debug,Clone)]
 pub struct Transaction {
     pub from: Address,
     pub to:Address,

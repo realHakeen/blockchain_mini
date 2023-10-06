@@ -6,6 +6,7 @@ use primitive_types::*;
 use crate::elementals::address::Address;
 
 ///blockchain由一个链接一个的block组成
+#[derive(Debug,Clone,)]
 pub struct Blockchain{
     block:Vec<Block>,
 }

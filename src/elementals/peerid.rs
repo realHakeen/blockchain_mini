@@ -4,7 +4,7 @@ use primitive_types::*;
 
 
 
-
+#[derive(Debug,Clone, Copy)]
 pub struct PeerID(H256);
 // 如何分配peerid？为了MVP原则，我们暂时使用public key进行hash，成为独一无二的peerid
 // 我们维护一个peerid list，

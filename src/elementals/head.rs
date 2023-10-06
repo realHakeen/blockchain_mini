@@ -1,7 +1,7 @@
 use std::{time::SystemTime, os::unix};
 
 use primitive_types::*;
-
+#[derive(Debug,Clone, Copy)]
 pub struct Header{
     parent_block:H256,
     timestamp:SystemTime,

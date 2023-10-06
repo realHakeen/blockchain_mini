@@ -15,7 +15,7 @@ use primitive_types::{U256,H256, H160};
 ///
 ///
 ///
-
+#[derive(Debug,Clone, Copy)]
 pub struct Address(pub H160);
 
 

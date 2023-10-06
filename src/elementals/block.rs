@@ -3,7 +3,7 @@ use crate::elementals::address::Address;
 use crate::elementals::head::Header;
 
 // block的设计specs，可以在DevP2P.md文件中找到，但是为了MVP原则，我们现在所有的设计均使用structureDesign.md中的设计
-
+#[derive(Debug,Clone, Copy)]
 pub struct Block{
     header:Header,
     block_number:U256,

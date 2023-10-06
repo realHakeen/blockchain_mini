@@ -11,6 +11,7 @@ mod Blockchain;
 mod TransactionPool;
 mod Miner;
 mod Validation;
+mod Networking;
 
 fn main() {
     
