@@ -5,6 +5,7 @@ use crate::elementals::peerid::PeerID;
 use crate::Blockchain::blockchain::Blockchain;
 use crate::TransactionPool::transactionpool::{TransactionPool, self};
 use super::peerid;
+use super::transaction::Transaction;
 use crate::Networking::discv::NodeDiscvService;
 
 // Node是我们对整个网络对象的抽象
@@ -53,10 +54,17 @@ impl Node {
         node_discv_service.find_other_node();
     }
     //找到其它节点，维护好nodelist之后，需要从其他节点处取得对应的信息，这部分的实现在networking中
-    //node节点发起一笔交易，该部分在node层面进行调用，但是在transactionpool进行交易校验和存入
-    pub fn send_a_new_transaction(&self){
-
+    //node节点发起一笔交易，该部分在node层面进行调用，在transactionpool进行交易校验和存入
+    pub fn send_a_new_transaction(&self,_transaction:Transaction){
+        
     }
+    //把transaction存入node对应的transactionpool之后，miner负责打包交易，并且形成pre-block
+    
+    //miner负责调用consensus模块进行block确认，miner返回saledBlock给node
+    //node调用将该saledBlock调用Networking模块在网络中广播
+    //每12s，都会自动进行区块打包，这里要分线程
+    
+    
 }
 
 

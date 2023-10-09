@@ -29,8 +29,8 @@ Utility: 负责进行RLP编码
 ## 交易
 1. Node实例发起一笔交易（miner模块负责实际发起），验证模块验证交易合法性（签名，格式），miner放入transaction pool
 2. 设定12s为一个slot，miner打包交易成一个block，并且执行所有的block，改变account模块的状态
-3. node实例调用consensus模块进行block确认
-4. consensus发起节点投票，将block唯一确认后，广播给其它peer
+3. miner实例调用consensus模块进行block确认
+4. consensus发起节点投票，将block唯一确认后，返回给该peer，peer调用networking模块广播给其它peer
 5. block变成saledblock，放入blockchain中形成canonical chain
 
 

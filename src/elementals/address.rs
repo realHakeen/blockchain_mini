@@ -15,7 +15,7 @@ use primitive_types::{U256,H256, H160};
 ///
 ///
 ///
-#[derive(Debug,Clone, Copy)]
+#[derive(Debug,Clone, Copy,PartialEq, Eq, PartialOrd, Ord,Hash)]
 pub struct Address(pub H160);
 
 
@@ -29,13 +29,20 @@ pub fn get_key_pair() -> (SecretKey, PublicKey) {
     (secret_key, public_key)
 }
 
-//这里需要注意使用Vec可以避免内存拷贝的开销，因为基于堆的拷贝，是浅拷贝，
-//地址是public_key serialize后的前20字节
-pub fn get_address(public_key: PublicKey) -> Vec<u8> {
+
+
+impl Address {
+    //这里需要注意使用Vec可以避免内存拷贝的开销，因为基于堆的拷贝，是浅拷贝，
+    //地址是public_key serialize后的前20字节
+pub fn get_address_from(public_key: PublicKey) -> Address {
     let serialize_address: [u8; 33] = public_key.serialize();
     let address = serialize_address[serialize_address.len() - 20..].to_vec();
-    address
+    let address_h160 = H160::from_slice(&address);
+    Address(address_h160)
 }
+}
+
+
 //测试用户输入的srcrate_key是否符合要求，然后从私钥生成公钥
 
 pub fn get_public_key(secrate_key:SecretKey) -> PublicKey{

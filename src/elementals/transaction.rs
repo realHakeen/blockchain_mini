@@ -29,7 +29,19 @@ pub struct Transaction {
 
 
 impl Transaction{
-    
+    pub fn new(
+        _from: Address,
+        _to:Address,
+        _amount:U256,
+        _base_gas:U256,
+        _priority_fee:U256,
+        _data:Vec<u8>,
+        _signature:H256,)->Self{
+        Self { from: _from, to: _to, amount: _amount, base_gas: _base_gas, priority_fee: _priority_fee, data: _data, signature: _signature }
+    }
+
+
+
 }
 
 

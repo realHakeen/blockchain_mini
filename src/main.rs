@@ -12,6 +12,7 @@ mod TransactionPool;
 mod Miner;
 mod Validation;
 mod Networking;
+mod Account;
 
 fn main() {
     

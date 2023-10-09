@@ -402,6 +402,7 @@ name = "blockchain_prague"
 version = "1.56.0"
 dependencies = [
  "libp2p",
+ "once_cell",
  "primitive-types",
  "secp256k1",
  "serde",
