@@ -1,5 +1,6 @@
 use crate::Account::account::ACCOUNTS;
 use crate::Validation::transactionValidation;
+use crate::elementals::node::Node;
 use crate::elementals::transaction::{Transaction, self};
 use crate::TransactionPool::transactionpool::TransactionPool;
 
@@ -19,13 +20,14 @@ impl Miner {
     pub fn new(){
         todo!()
     }
-    pub fn send_a_new_transaction(&self,_transaction:Transaction,_transaction_pool:TransactionPool){
-        
+    // pick transactions 是从transactionpool里面找到一些transactions,n的数量是miner自己设置的，node是不管的
+    // 我们一般认为当n = 10 或者slot在12s时，会pick transactions 发送给evm执行交易（目前evm只支持转账），并且打包成pre-block
+    // 
+    fn pick_transactions(_node:&mut Node,n:usize)->Vec<Transaction>{
+        _node.transaction_pool.get_transaction_in_fcfs(n)
     }
-    fn pick_transactions(){
-        todo!()
-    }
-    fn build_block(){
+    // evm负责把我们pick的transactions
+    fn build_block(&self){
         todo!()
     }
     

@@ -4,6 +4,7 @@ use secp256k1::{Secp256k1, SecretKey, PublicKey};
 use crate::elementals::peerid::PeerID;
 use crate::Blockchain::blockchain::Blockchain;
 use crate::TransactionPool::transactionpool::{TransactionPool, self};
+use super::address::Address;
 use super::peerid;
 use super::transaction::Transaction;
 use crate::Networking::discv::NodeDiscvService;
@@ -17,6 +18,7 @@ use crate::Networking::discv::NodeDiscvService;
 pub struct Node{
     secrate_key:SecretKey,
     pub public_key:PublicKey,
+    pub address:Address,
     //关于peerid如何分配？
     pub peer_id:PeerID,
     pub blockchain:Blockchain,
@@ -30,22 +32,25 @@ impl Node {
         let secrate_key:SecretKey;
         let public_key:PublicKey;
         let peer_id:PeerID;
+        let address:Address;
 
         // 其实可以使用match 匹配更多情况 但是我们MVP
         if _secrate_key == None{
             secrate_key = SecretKey::new(&mut rand::thread_rng());
             public_key = PublicKey::from_secret_key(&secp, &secrate_key);
+            address = Address::get_address_from(public_key);
             peer_id = PeerID::new(public_key);
             
         }else {
             secrate_key = _secrate_key.unwrap();
             public_key = PublicKey::from_secret_key(&secp, &_secrate_key.unwrap());
+            address = Address::get_address_from(public_key);
             peer_id = PeerID::new(public_key);
         }
         let blockchain:Blockchain = Blockchain::new();
         let transactionpool:TransactionPool = TransactionPool::new();
         
-        Node { secrate_key: secrate_key, public_key: public_key, peer_id: peer_id, blockchain: blockchain, transaction_pool: transactionpool }
+        Node { secrate_key: secrate_key, public_key: public_key,address:address,peer_id: peer_id, blockchain: blockchain, transaction_pool: transactionpool }
         
     }
     //查找其它节点的具体工作是由Networking模块下的discv协议完成
@@ -55,10 +60,12 @@ impl Node {
     }
     //找到其它节点，维护好nodelist之后，需要从其他节点处取得对应的信息，这部分的实现在networking中
     //node节点发起一笔交易，该部分在node层面进行调用，在transactionpool进行交易校验和存入
-    pub fn send_a_new_transaction(&self,_transaction:Transaction){
-        
+    pub fn send_a_new_transaction(&mut self,_address:Address,_transaction:Transaction)->bool{
+        let success = self.transaction_pool.add_tx_to_transaction_pool(_address, _transaction);
+        success
     }
     //把transaction存入node对应的transactionpool之后，miner负责打包交易，并且形成pre-block
+    
     
     //miner负责调用consensus模块进行block确认，miner返回saledBlock给node
     //node调用将该saledBlock调用Networking模块在网络中广播
