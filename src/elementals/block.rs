@@ -1,3 +1,6 @@
+use std::fmt::{write, Display};
+use std::str::FromStr;
+
 use primitive_types::{U256,H256};
 use crate::elementals::address::Address;
 use crate::elementals::head::Header;
@@ -27,6 +30,21 @@ impl Block {
     ) ->Self {
         Block { header: _header, block_number: _block_number, transaction_root: _transaction_root, miner: _miner }
     }
+
+    pub fn as_hash(&self)->H256{
+        // 首先把Block转换成str类型
+        todo!()
+    }
 }
+
+impl Display for Block {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f,"({}, {}, {}, {})",self.header,self.block_number,self.transaction_root,self.miner)
+    }
+}
+
+
+
+
 
 

@@ -1,5 +1,6 @@
 extern crate secp256k1;
 use std::clone;
+use std::fmt::Display;
 
 use secp256k1::hashes::sha256;
 use secp256k1::rand::rngs::OsRng;
@@ -48,4 +49,11 @@ pub fn get_address_from(public_key: PublicKey) -> Address {
 pub fn get_public_key(secrate_key:SecretKey) -> PublicKey{
     let secp = Secp256k1::new();
     PublicKey::from_secret_key(&secp,&secrate_key)
+}
+
+
+impl Display for Address {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f,"({})",self.0)
+    }
 }

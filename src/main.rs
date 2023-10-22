@@ -13,6 +13,7 @@ mod Miner;
 mod Validation;
 mod Networking;
 mod Account;
+mod VM;
 
 fn main() {
     

@@ -1,6 +1,7 @@
+use std::fmt;
 use std::time::SystemTime;
 
-use crate::elementals::block::{Block};
+use crate::elementals::block::{Block, self};
 use crate::elementals::head::Header;
 use primitive_types::*;
 use crate::elementals::address::Address;
@@ -28,5 +29,10 @@ impl Blockchain {
     pub fn add_saledBlock(mut self,_saled_block:Block){
         self.block.push(_saled_block);
     }
+    pub fn get_latest_block(&mut self)->&mut Block{
+        self.block.last_mut().unwrap()
+    }
     
 }
+
+

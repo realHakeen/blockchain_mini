@@ -14,3 +14,22 @@ impl Header {
         Header { parent_block: _parent_block, timestamp: _timestamp, gas_used: _gas_used }
     }
 }
+
+impl std::fmt::Display for Header {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f,"({}, {:?} , {})",self.parent_block,self.timestamp,self.gas_used)
+    }
+}
+
+mod tests{
+    use std::time::SystemTime;
+    use crate::elementals::head::{Header};
+    use primitive_types::{self, H256, U256};
+    # [test]
+    fn test_header(){
+        let block_hash = H256([0;32]);
+        let header = Header::new(block_hash, SystemTime::now(), U256([10,0,0,0]));
+        eprint!("{}",header.to_string());
+    }
+
+}
