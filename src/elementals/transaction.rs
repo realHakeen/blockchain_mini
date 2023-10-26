@@ -23,6 +23,7 @@ pub struct Transaction {
     pub amount:U256,
     pub base_gas:U256,
     pub priority_fee:U256,
+    // 涉及到堆，只能指针转移
     pub data:Vec<u8>,
     pub signature:H256,
 }

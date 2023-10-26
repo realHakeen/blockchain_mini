@@ -32,6 +32,10 @@ impl Blockchain {
     pub fn get_latest_block(&mut self)->&mut Block{
         self.block.last_mut().unwrap()
     }
+    pub fn get_latest_block_H256(&mut self) -> H256{
+        let latest_block = self.block.last().unwrap();
+        latest_block.as_hash()
+    }
     
 }
 

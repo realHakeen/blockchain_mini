@@ -16,7 +16,7 @@ impl Executor {
     }
 
     // 执行交易，然后把交易的状态进行转换
-    pub fn execution_transaction(_transaction:Transaction)->bool{
+    pub fn execution_transaction(_transaction:&Transaction)->bool{
         //执行交易的流程是
         //1. 首先验证from的balance，然后验证是否大于amount+gas
         //2. 验证这笔交易的签名是否是有效(暂时不验证)

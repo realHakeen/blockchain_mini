@@ -9,7 +9,7 @@ use crate::elementals::head::Header;
 #[derive(Debug,Clone, Copy)]
 pub struct Block{
     header:Header,
-    block_number:U256,
+    pub block_number:U256,
     transaction_root:H256,
     miner:Address,
 }

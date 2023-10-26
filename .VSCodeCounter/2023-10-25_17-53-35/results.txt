@@ -1,0 +1,77 @@
+Date : 2023-10-25 17:53:35
+Directory : /Users/hakeen/Learning/blockchain_mini
+Total : 39 files,  1148 codes, 119 comments, 442 blanks, all 1709 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Markdown |         16 |        690 |          0 |        272 |        962 |
+| Rust     |         23 |        458 |        119 |        170 |        747 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                           | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                              |         39 |      1,148 |        119 |        442 |      1,709 |
+| . (Files)                                                                      |          1 |         63 |          0 |         20 |         83 |
+| docs                                                                           |         15 |        627 |          0 |        252 |        879 |
+| docs/research                                                                  |         15 |        627 |          0 |        252 |        879 |
+| src                                                                            |         23 |        458 |        119 |        170 |        747 |
+| src (Files)                                                                    |          1 |         10 |          8 |          3 |         21 |
+| src/Account                                                                    |          2 |         17 |          5 |          4 |         26 |
+| src/Blockchain                                                                 |          2 |         32 |          4 |          8 |         44 |
+| src/Miner                                                                      |          2 |         38 |         15 |         15 |         68 |
+| src/Networking                                                                 |          2 |         27 |          5 |          8 |         40 |
+| src/TransactionPool                                                            |          2 |         43 |         19 |         16 |         78 |
+| src/VM                                                                         |          2 |         21 |          8 |         14 |         43 |
+| src/Validation                                                                 |          2 |         60 |         10 |         18 |         88 |
+| src/elementals                                                                 |          8 |        210 |         45 |         84 |        339 |
++--------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                       | language | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| /Users/hakeen/Learning/blockchain_mini/README.md                               | Markdown |         63 |          0 |         20 |         83 |
+| /Users/hakeen/Learning/blockchain_mini/docs/research/Consensus.md              | Markdown |         41 |          0 |         27 |         68 |
+| /Users/hakeen/Learning/blockchain_mini/docs/research/DataBase.md               | Markdown |          0 |          0 |          1 |          1 |
+| /Users/hakeen/Learning/blockchain_mini/docs/research/Devp2p.md                 | Markdown |        164 |          0 |         35 |        199 |
+| /Users/hakeen/Learning/blockchain_mini/docs/research/Discv4.md                 | Markdown |         39 |          0 |         20 |         59 |
+| /Users/hakeen/Learning/blockchain_mini/docs/research/ECDSA.md                  | Markdown |         12 |          0 |         11 |         23 |
+| /Users/hakeen/Learning/blockchain_mini/docs/research/Reth_of_paradigm.md       | Markdown |         10 |          0 |          4 |         14 |
+| /Users/hakeen/Learning/blockchain_mini/docs/research/broadcastMechanism.md     | Markdown |         48 |          0 |         21 |         69 |
+| /Users/hakeen/Learning/blockchain_mini/docs/research/chooseHashFunc.md         | Markdown |         45 |          0 |         14 |         59 |
+| /Users/hakeen/Learning/blockchain_mini/docs/research/network.md                | Markdown |         19 |          0 |          6 |         25 |
+| /Users/hakeen/Learning/blockchain_mini/docs/research/rust-libp2p.md            | Markdown |         53 |          0 |         24 |         77 |
+| /Users/hakeen/Learning/blockchain_mini/docs/research/storage.md                | Markdown |          2 |          0 |          1 |          3 |
+| /Users/hakeen/Learning/blockchain_mini/docs/research/structureDesign.md        | Markdown |         58 |          0 |         17 |         75 |
+| /Users/hakeen/Learning/blockchain_mini/docs/research/tokennomics.md            | Markdown |        104 |          0 |         36 |        140 |
+| /Users/hakeen/Learning/blockchain_mini/docs/research/tx_life_time.md           | Markdown |         32 |          0 |         34 |         66 |
+| /Users/hakeen/Learning/blockchain_mini/docs/research/workerMechenism.md        | Markdown |          0 |          0 |          1 |          1 |
+| /Users/hakeen/Learning/blockchain_mini/src/Account/account.rs                  | Rust     |         16 |          5 |          4 |         25 |
+| /Users/hakeen/Learning/blockchain_mini/src/Account/mod.rs                      | Rust     |          1 |          0 |          0 |          1 |
+| /Users/hakeen/Learning/blockchain_mini/src/Blockchain/blockchain.rs            | Rust     |         31 |          4 |          8 |         43 |
+| /Users/hakeen/Learning/blockchain_mini/src/Blockchain/mod.rs                   | Rust     |          1 |          0 |          0 |          1 |
+| /Users/hakeen/Learning/blockchain_mini/src/Miner/miner.rs                      | Rust     |         37 |         15 |         15 |         67 |
+| /Users/hakeen/Learning/blockchain_mini/src/Miner/mod.rs                        | Rust     |          1 |          0 |          0 |          1 |
+| /Users/hakeen/Learning/blockchain_mini/src/Networking/discv.rs                 | Rust     |         26 |          5 |          7 |         38 |
+| /Users/hakeen/Learning/blockchain_mini/src/Networking/mod.rs                   | Rust     |          1 |          0 |          1 |          2 |
+| /Users/hakeen/Learning/blockchain_mini/src/TransactionPool/mod.rs              | Rust     |          1 |          0 |          1 |          2 |
+| /Users/hakeen/Learning/blockchain_mini/src/TransactionPool/transactionpool.rs  | Rust     |         42 |         19 |         15 |         76 |
+| /Users/hakeen/Learning/blockchain_mini/src/VM/mod.rs                           | Rust     |          1 |          0 |          0 |          1 |
+| /Users/hakeen/Learning/blockchain_mini/src/VM/transactionExecute.rs            | Rust     |         20 |          8 |         14 |         42 |
+| /Users/hakeen/Learning/blockchain_mini/src/Validation/mod.rs                   | Rust     |          1 |          0 |          0 |          1 |
+| /Users/hakeen/Learning/blockchain_mini/src/Validation/transactionValidation.rs | Rust     |         59 |         10 |         18 |         87 |
+| /Users/hakeen/Learning/blockchain_mini/src/elementals/address.rs               | Rust     |         35 |         12 |         13 |         60 |
+| /Users/hakeen/Learning/blockchain_mini/src/elementals/block.rs                 | Rust     |         30 |          5 |         16 |         51 |
+| /Users/hakeen/Learning/blockchain_mini/src/elementals/body.rs                  | Rust     |          0 |          0 |          1 |          1 |
+| /Users/hakeen/Learning/blockchain_mini/src/elementals/head.rs                  | Rust     |         29 |          0 |          6 |         35 |
+| /Users/hakeen/Learning/blockchain_mini/src/elementals/mod.rs                   | Rust     |          6 |          0 |          2 |          8 |
+| /Users/hakeen/Learning/blockchain_mini/src/elementals/node.rs                  | Rust     |         62 |         14 |         23 |         99 |
+| /Users/hakeen/Learning/blockchain_mini/src/elementals/peerid.rs                | Rust     |         23 |          2 |         11 |         36 |
+| /Users/hakeen/Learning/blockchain_mini/src/elementals/transaction.rs           | Rust     |         25 |         12 |         12 |         49 |
+| /Users/hakeen/Learning/blockchain_mini/src/main.rs                             | Rust     |         10 |          8 |          3 |         21 |
+| Total                                                                          |          |      1,148 |        119 |        442 |      1,709 |
++--------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

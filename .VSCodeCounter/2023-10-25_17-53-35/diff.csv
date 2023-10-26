@@ -1,0 +1,12 @@
+"filename", "language", "Rust", "comment", "blank", "total"
+"/Users/hakeen/Learning/blockchain_mini/src/Blockchain/blockchain.rs", "Rust", 8, 0, 2, 10
+"/Users/hakeen/Learning/blockchain_mini/src/Miner/miner.rs", "Rust", 17, 11, 7, 35
+"/Users/hakeen/Learning/blockchain_mini/src/TransactionPool/transactionpool.rs", "Rust", -1, 4, 2, 5
+"/Users/hakeen/Learning/blockchain_mini/src/VM/mod.rs", "Rust", 1, 0, 0, 1
+"/Users/hakeen/Learning/blockchain_mini/src/VM/transactionExecute.rs", "Rust", 20, 8, 14, 42
+"/Users/hakeen/Learning/blockchain_mini/src/elementals/address.rs", "Rust", 6, 0, 2, 8
+"/Users/hakeen/Learning/blockchain_mini/src/elementals/block.rs", "Rust", 10, 1, 7, 18
+"/Users/hakeen/Learning/blockchain_mini/src/elementals/head.rs", "Rust", 16, 0, 3, 19
+"/Users/hakeen/Learning/blockchain_mini/src/elementals/node.rs", "Rust", 7, 0, 0, 7
+"/Users/hakeen/Learning/blockchain_mini/src/main.rs", "Rust", 1, 0, 0, 1
+"Total", "-", 85, 24, 37, 146

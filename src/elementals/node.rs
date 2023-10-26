@@ -5,6 +5,7 @@ use crate::elementals::peerid::PeerID;
 use crate::Blockchain::blockchain::Blockchain;
 use crate::TransactionPool::transactionpool::{TransactionPool, self};
 use super::address::Address;
+use super::block::Block;
 use super::peerid;
 use super::transaction::Transaction;
 use crate::Networking::discv::NodeDiscvService;
@@ -65,7 +66,9 @@ impl Node {
         success
     }
     //把transaction存入node对应的transactionpool之后，miner负责打包交易，并且形成pre-block
-    
+    pub fn get_pre_block()->Block{
+        todo!()
+    }
     
     //miner负责调用consensus模块进行block确认，miner返回saledBlock给node
     //node调用将该saledBlock调用Networking模块在网络中广播
