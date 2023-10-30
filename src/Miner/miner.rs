@@ -78,21 +78,28 @@ impl Miner {
 
 mod tests{
 
-    use crate::VM::transactionExecute::Executor;
-    use crate::Account::account::ACCOUNTS;
-    use crate::Validation::transactionValidation;
-    use crate::elementals::head::Header;
     use crate::elementals::node::Node;
-    use crate::elementals::transaction::{Transaction, self};
-    use crate::elementals::block::Block;
-    use crate::elementals::address::Address;
+    use crate::elementals::transaction::Transaction;
+    use Utility::utility::{self, sign_a_signature};
+
+    
 
     # [test]
-    fn test_build_block(){
-        //运行一个节点
+    fn test_build_block<'a>(){
+        //搞两个节点
         let node = Node::new(None);
-        //插入多笔交易
-        todo!()
+        let node_second = Node::new(None);
+
+        // 捏造一个签名，签名还没实现，这个签名应该是utility.rs来实现的
+        let signature = sign_a_signature(secret_key, transaction)
+        // build 多笔交易
+        eprint!("The node first address is {}, the node second address is {}",node.address,node_second.address);
+        let transactons:Vec<Transaction> = vec![(Transaction::new(node.address, node_second.address, 10, 1, 2, None, signature)),()];
+        
+        
+        
+
+        
 
     }
 
