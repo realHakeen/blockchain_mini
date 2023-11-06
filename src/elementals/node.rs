@@ -17,7 +17,7 @@ use crate::Networking::discv::NodeDiscvService;
 
 #[derive(Debug,Clone)]
 pub struct Node{
-    secrate_key:SecretKey,
+    pub secrate_key:SecretKey,
     pub public_key:PublicKey,
     pub address:Address,
     //关于peerid如何分配？
@@ -61,8 +61,8 @@ impl Node {
     }
     //找到其它节点，维护好nodelist之后，需要从其他节点处取得对应的信息，这部分的实现在networking中
     //node节点发起一笔交易，该部分在node层面进行调用，在transactionpool进行交易校验和存入
-    pub fn send_a_new_transaction(&mut self,_address:Address,_transaction:Transaction)->bool{
-        let success = self.transaction_pool.add_tx_to_transaction_pool(_address, _transaction);
+    pub fn send_a_new_transaction(&mut self,_transaction:&Transaction)->bool{
+        let success = self.transaction_pool.add_tx_to_transaction_pool(&_transaction);
         success
     }
     //把transaction存入node对应的transactionpool之后，miner负责打包交易，并且形成pre-block
@@ -82,10 +82,14 @@ impl Node {
 
 
 mod tests{
+    use std::ptr::eq;
+
     use libp2p::identity::PublicKey;
     use secp256k1::{SecretKey, rand};
-
+    use crate::Account::account::Account;
+    use crate::{elementals::transaction::Transaction, Account::account::ACCOUNTS};
     use crate::Networking::discv::NodeDiscvService;
+    use primitive_types::{H256,U256};
 
     use super::Node;
 
@@ -98,4 +102,24 @@ mod tests{
         eprint!("find the node list is {:?}",find_node_service.node_list);
 
     }
+    # [test]
+    fn test_send_a_new_transaction(){
+        let mut mynode = Node::new(None);
+        let one_transaction = Transaction::new(mynode.address,
+            mynode.address,
+            U256::from(10),
+            U256::from(10),
+            U256::from(10),
+            vec![],
+            H256::from_low_u64_be(0)
+        );
+        // 给账户加点钱呀 没钱怎么转账？？？？ 无语死了
+        unsafe{
+            ACCOUNTS.insert(mynode.address, Account::new(U256([100;4])));
+        }
+        let success = mynode.send_a_new_transaction(&one_transaction);
+        assert_eq!(true,success);
+        
+    }
+
 }

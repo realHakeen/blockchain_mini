@@ -19,7 +19,7 @@ pub static mut ACCOUNTS:Lazy<HashMap<Address,Account>> = Lazy::new(||{
 });
 
 impl Account {
-    pub fn new()->Self{
-        Self { balance: U256([0;4]) }
+    pub fn new(_balance:U256)->Self{
+        Self { balance: _balance }
     }
 }

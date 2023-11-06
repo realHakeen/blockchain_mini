@@ -3,6 +3,7 @@ use std::borrow::Borrow;
 use std::time::SystemTime;
 
 use primitive_types::{U256, H256};
+use secp256k1::{SecretKey, PublicKey, KeyPair, Secp256k1,rand};
 
 use crate::VM::transactionExecute::Executor;
 use crate::Account::account::ACCOUNTS;
@@ -20,15 +21,33 @@ use crate::elementals::address::Address;
 /// miner角色维护的数据暂时无
 # [derive(Debug,Clone)]
 pub struct Miner{
+    keypair:KeyPair,
     address:Address,
 }
 
 
 
 impl Miner {
-    pub fn new(){
-        todo!()
-    }
+    pub fn new(_keypair :Option<KeyPair>)->Self{
+        if _keypair.is_none() {
+            let secp = Secp256k1::new();
+            let keypair = KeyPair::new(&secp, &mut rand::thread_rng());
+            let address = Address::get_address_from(keypair.public_key());
+            Miner{
+                keypair:keypair,
+                address:address,
+            }
+                
+            }else{
+              
+                Miner{
+                    keypair:_keypair.unwrap(),
+                    address:Address::get_address_from(_keypair.unwrap().public_key()),
+                }
+                
+            }
+        }
+    
     // pick transactions 是从transactionpool里面找到一些transactions,n的数量是miner自己设置的，node是不管的
     // 我们一般认为当n = 10 或者slot在12s时，会pick transactions 发送给evm执行交易（目前evm只支持转账），并且打包成pre-block
     // 
@@ -78,29 +97,59 @@ impl Miner {
 
 mod tests{
 
+    use primitive_types::{U256, H256};
+
+    use crate::Account::account::{ACCOUNTS, Account};
+    use crate::Miner::miner::Miner;
+    use crate::elementals::address::Address;
     use crate::elementals::node::Node;
     use crate::elementals::transaction::Transaction;
-    use Utility::utility::{self, sign_a_signature};
+    
 
     
 
     # [test]
     fn test_build_block<'a>(){
         //搞两个节点
-        let node = Node::new(None);
-        let node_second = Node::new(None);
+        let mut node = Node::new(None);
+        let mut node_second = Node::new(None);
+        eprintln!("The node first address is {}, the node second address is {}",node.address,node_second.address);
+        // 我们暂时不实现sign_transaction，因为实际上不是H256格式，后续需要verify，外貌引入了secp256k1::ecdsa库
+        // 那么transaction格式中sig字段应该改为Signature
+        
+        // 首先给两个node充值点代币
+        unsafe { ACCOUNTS.insert(node.address, Account::new(U256::from(101))) };
+        unsafe { ACCOUNTS.insert(node_second.address, Account::new(U256::from(102))) };
 
-        // 捏造一个签名，签名还没实现，这个签名应该是utility.rs来实现的
-        let signature = sign_a_signature(secret_key, transaction)
-        // build 多笔交易
-        eprint!("The node first address is {}, the node second address is {}",node.address,node_second.address);
-        let transactons:Vec<Transaction> = vec![(Transaction::new(node.address, node_second.address, 10, 1, 2, None, signature)),()];
+        eprintln!("Top up {} token for node ,and {} token for node_second",
+        unsafe {
+            ACCOUNTS.get(&node.address).unwrap().balance 
+        },
+        unsafe {
+            ACCOUNTS.get(&node_second.address).unwrap().balance
+        }       
+    );
         
-        
+        let mut transactons:Vec<Transaction> = Vec::new();
+        transactons.push(Transaction::new(node.address, node_second.address, U256([10,0,0,0]), U256([1,0,0,0]), U256([2,0,0,0]), Vec::new(), H256::from([0;32])));
+        transactons.push(Transaction::new(node.address, node_second.address, U256([20,0,0,0]), U256([2,0,0,0]), U256([2,0,0,0]), Vec::new(), H256::from([0;32])));
+
+        // 加入发起节点的交易池
+        let success = node.send_a_new_transaction(&transactons[0]);
+        let success_two = node.send_a_new_transaction(&transactons[1]);
+
+        eprintln!("add to transaction pool : {}",success_two);
+        eprintln!("node transaction pool has the tx number : {}",node.transaction_pool.transaction_count);
         
 
-        
+        //开始执行交易，形成pre-block
+        //首先来一个miner
+        let miner = Miner::new(None);
+        eprintln!("Introducing a Miner address {}",miner.address);
+        let pre_block = miner.build_block(&mut node, 2);
+        assert_eq!(pre_block.miner,miner.address);
 
+        
     }
 
 

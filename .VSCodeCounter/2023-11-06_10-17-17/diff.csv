@@ -1,0 +1,6 @@
+"filename", "language", "Rust", "comment", "blank", "total"
+"/Users/hakeen/Learning/blockchain_mini/src/Miner/miner.rs", "Rust", 24, 3, 3, 30
+"/Users/hakeen/Learning/blockchain_mini/src/TransactionPool/transactionpool.rs", "Rust", 16, 2, 4, 22
+"/Users/hakeen/Learning/blockchain_mini/src/Validation/transactionValidation.rs", "Rust", 5, 0, 2, 7
+"/Users/hakeen/Learning/blockchain_mini/src/elementals/node.rs", "Rust", 21, 1, 2, 24
+"Total", "-", 66, 6, 11, 83

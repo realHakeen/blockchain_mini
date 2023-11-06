@@ -1,5 +1,6 @@
 
 use crate::elementals::transaction::{self, Transaction};
+use primitive_types::{H256, U256};
 use secp256k1::hashes::Hash;
 use secp256k1::{SecretKey, Message};
 use crate::elementals::address::Address;
@@ -20,22 +21,27 @@ impl Validator {
     }
 
     
-    pub fn validate_transaction(_address:Address,_transaction:Transaction) -> bool{
+    pub fn validate_transaction(_transaction:&Transaction) -> bool{
         /// 查看该address下的account是否有被初始化
         /// 首先查找该地址下的Account对应的balance，确定balance是否大于amount+gas，如果大于则通过validation
         /// 当然还需要验证该transaction的signature是否满足，但是我们暂时不实现
-        if unsafe { ACCOUNTS.contains_key(&_address) } {
-            let balance = unsafe { ACCOUNTS.get(&_address).unwrap().balance };
+        if unsafe { ACCOUNTS.contains_key(&_transaction.from) } {
+            let balance: U256 = unsafe { ACCOUNTS.get(&_transaction.from).unwrap().balance };
             if balance >  _transaction.amount+ _transaction.base_gas+_transaction.priority_fee{
                 true
             }else {
+                eprintln!("sorry ur balance is not enough");
+                eprintln!("Ur Balance is {} and ur amount+base_gas_priority_gas is {}",
+                balance,_transaction.amount+ _transaction.base_gas+_transaction.priority_fee
+            );
                 false
             }
         }else {
             //在Accounts中创建，然后返回false
-            let account = Account::new();
+            eprintln!("sorry Ur Accounts has no logoin and no balance");
+            let account = Account::new(U256::from(0));
             unsafe{
-                ACCOUNTS.insert(_address, account);
+                ACCOUNTS.insert(_transaction.from, account);
             }
             false
         }
@@ -66,11 +72,11 @@ mod tests{
     use crate::elementals::address::{self, Address};
     # [test]
     // 构建一个transaction，以及transactionpool，看函数是否执行到位
-    fn test_tx_into_txpool(){
+    fn test_validate_transaction(){
         let secp = Secp256k1::new();
         let keypair = KeyPair::new(&secp, &mut rand::thread_rng());
         let mynode = Node::new(Some(keypair.secret_key()));
-        let my_address = Address::get_address_from(keypair.public_key());
+        let my_address = mynode.address;
         unsafe { ACCOUNTS.insert(my_address, Account { balance: U256::from(100) }) };
         let one_transaction = Transaction::new(my_address,
             my_address,
@@ -81,7 +87,9 @@ mod tests{
             H256::from_low_u64_be(0)
         );
         // 初始化完成以后，即可测试
-        let test = Validator::validate_transaction(my_address, one_transaction);
+        let test = Validator::validate_transaction(&one_transaction);
         assert_eq!(true,test);
     }
+
+
 }

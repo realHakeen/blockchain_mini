@@ -30,8 +30,10 @@ impl TransactionPool {
     }
     
     /// 一旦完成transaction的验证，那么就将该transaction放入txpool中
-    pub fn add_tx_to_transaction_pool(&mut self,_address:Address,_transaction:Transaction)->bool{
-        let success = Validator::validate_transaction(_address, _transaction.clone());
+    pub fn add_tx_to_transaction_pool(&mut self,_transaction:&Transaction)->bool{
+        let success = Validator::validate_transaction( &_transaction);
+        // 这里有一个输出测试
+        eprintln!("validate:success: {}",success);
         if success{
             // 初步验证交易成功，则把交易放到transactionpool中，我们放入txpool是fcfs原则，但是具体打包交易挑选什么block则由miner来决定
             self.transactionpool.push(_transaction.clone());
@@ -65,9 +67,29 @@ impl TransactionPool {
 
 
 mod tests{
+    use crate::{elementals::{transaction::Transaction, node::Node}, TransactionPool, Account::account::{ACCOUNTS, Account}};
+    use primitive_types::{U256,H256};
+
+
 
     # [test]
-    fn test_tx_into_txpool(){
+    fn test_add_tx_into_txpool(){
+        let mynode = Node::new(None);
+        //给一点余额
+        unsafe { ACCOUNTS.insert(mynode.address, Account::new(U256([100;4]))) };
+
+        let one_transaction = Transaction::new(mynode.address,
+            mynode.address,
+            U256::from(10),
+            U256::from(10),
+            U256::from(10),
+            vec![],
+            H256::from_low_u64_be(0)
+        );
+
+        let mut transactionpool = TransactionPool::transactionpool::TransactionPool::new();
+        let success = transactionpool.add_tx_to_transaction_pool(&one_transaction);
+        assert_eq!(success,true);
         
     }
 }

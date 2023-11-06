@@ -2,6 +2,7 @@ use std::str::Bytes;
 
 use crate::elementals::address::Address;
 use primitive_types::*;
+use secp256k1::ecdsa::Signature;
 ///
 /// 根据README.md介绍，交易的字段包括
 /// 1. from：该交易的发起人
@@ -28,6 +29,17 @@ pub struct Transaction {
     pub signature:H256,
 }
 
+# [derive(Debug,Clone)]
+pub struct Pre_transaction{
+    pub from: Address,
+    pub to:Address,
+    pub amount:U256,
+    pub base_gas:U256,
+    pub priority_fee:U256,
+    // 涉及到堆，只能指针转移
+    pub data:Vec<u8>,
+}
+
 
 impl Transaction{
     pub fn new(
@@ -40,8 +52,6 @@ impl Transaction{
         _signature:H256,)->Self{
         Self { from: _from, to: _to, amount: _amount, base_gas: _base_gas, priority_fee: _priority_fee, data: _data, signature: _signature }
     }
-
-
 
 }
 
