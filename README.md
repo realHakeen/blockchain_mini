@@ -69,10 +69,10 @@ block的字段设计：
 [以太坊执行层消息传递协议DevP2P](/docs/research/Devp2p.md)  
 [执行层设计](./docs/research/network.md)  
 [共识层设计](./docs/research/Consensus.md)  
-【WIP】[矿工机制的设计:Worker的选择](./docs/research/workerMechenism.md)  
-【WIP】[Casper FFG共识机制以及共识节点的选择](./docs/research/Consensus.md)    
+[矿工机制的设计:Worker的选择](./docs/research/workerMechenism.md)  
+[Casper FFG共识机制以及共识节点的选择](./docs/research/Consensus.md)    
 【WIP】[底层数据库的设计](./docs/research/DataBase.md)  
-【WIP】[项目架构设计](./docs/research/structureDesign.md) 
+[项目架构设计](./docs/research/structureDesign.md) 
 
 
 
